@@ -1,0 +1,12 @@
+# Ignore data files
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Common data formats
+*.csv
+*.xlsx
+*.parquet
+*.pkl
+*.h5
