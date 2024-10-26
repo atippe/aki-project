@@ -10,3 +10,15 @@ data/processed/*
 *.parquet
 *.pkl
 *.h5
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
