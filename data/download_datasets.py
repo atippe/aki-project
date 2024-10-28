@@ -7,7 +7,7 @@ def download_dataset(dataset_name, target_dir="raw"):
         # IMPORTANT: You need to set your credentials as environment variables before using Kaggle API
         # os.environ["KAGGLE_USERNAME"] = "your_kaggle_username"
         # os.environ["KAGGLE_KEY"] = "your_kaggle_api_key"
-        
+
         import kaggle
         from kaggle.api.kaggle_api_extended import KaggleApi
 
