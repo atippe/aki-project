@@ -17,7 +17,7 @@ class BasicDataProcessor:
 
         Args:
             start_date (str): Start date for data (e.g., '2022-01-01')
-            resample_rule (str): Resample frequency ('1H' for hourly, '4H' for 4 hours)
+            resample_rule (str): Resample frequency ('1h' for hourly, '4h' for 4 hours)
         """
         self.processed_dir.mkdir(parents=True, exist_ok=True)
 
