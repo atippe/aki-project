@@ -45,7 +45,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             outputs = model(batch_X)
 
             # Normalized/Scaled loss (0-1 range)
-            scaled_loss = criterion(outputs, batch_y)
+            scaled_loss = criterion(outputs, batcproh_y)
             scaled_loss.backward()
             optimizer.step()
 
