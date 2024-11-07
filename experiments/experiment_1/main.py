@@ -45,7 +45,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             outputs = model(batch_X)
 
             # Normalized/Scaled loss (0-1 range)
-            scaled_loss = criterion(outputs, batcproh_y)
+            scaled_loss = criterion(outputs, batch_y)
             scaled_loss.backward()
             optimizer.step()
 
@@ -133,6 +133,80 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
     return train_losses, val_losses
 
 
+def evaluate_model(model, test_loader, criterion, device, scaler):
+    model.eval()
+    total_loss = 0
+    num_batches = 0
+
+    with torch.no_grad():
+        for batch_X, batch_y in test_loader:
+            batch_X, batch_y = batch_X.to(device), batch_y.to(device)
+            outputs = model(batch_X)
+
+            # Calculate price scale loss
+            scaled_pred = outputs.cpu().numpy()
+            scaled_target = batch_y.cpu().numpy()
+
+            pred_features = np.zeros((scaled_pred.shape[0], 5))
+            pred_features[:, 1] = scaled_pred[:, 0]
+
+            target_features = np.zeros((scaled_target.shape[0], 5))
+            target_features[:, 1] = scaled_target[:, 0]
+
+            price_pred = scaler.inverse_transform(pred_features)[:, 1]
+            price_target = scaler.inverse_transform(target_features)[:, 1]
+
+            loss = np.mean((price_pred - price_target) ** 2)
+            total_loss += loss
+            num_batches += 1
+
+    return total_loss / num_batches
+
+
+def plot_predictions(model, test_loader, scaler, device, results_dir, test_data, sequence_length):
+    model.eval()
+    predictions = []
+    actuals = []
+
+    with torch.no_grad():
+        for batch_X, batch_y in test_loader:
+            batch_X, batch_y = batch_X.to(device), batch_y.to(device)
+            outputs = model(batch_X)
+
+            # Convert to price scale
+            scaled_pred = outputs.cpu().numpy()
+            scaled_target = batch_y.cpu().numpy()
+
+            pred_features = np.zeros((scaled_pred.shape[0], 5))
+            pred_features[:, 1] = scaled_pred[:, 0]
+
+            target_features = np.zeros((scaled_target.shape[0], 5))
+            target_features[:, 1] = scaled_target[:, 0]
+
+            price_pred = scaler.inverse_transform(pred_features)[:, 1]
+            price_target = scaler.inverse_transform(target_features)[:, 1]
+
+            predictions.extend(price_pred)
+            actuals.extend(price_target)
+
+    # Get dates from test_data
+    dates = test_data.index[sequence_length:]  # Skip first sequence_length timestamps
+
+    # Create the plot
+    plt.figure(figsize=(15, 7))
+    plt.plot(dates, actuals, label='Actual Price', color='blue')
+    plt.plot(dates, predictions, label='Predicted Price', color='red')
+    plt.title('Bitcoin Price: Actual vs Predicted')
+    plt.xlabel('Date')
+    plt.ylabel('Price ($)')
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig(results_dir / 'price_predictions.png')
+    plt.close()
+
+
 def main():
     # Parameters
     sequence_length = 60
@@ -150,6 +224,10 @@ def main():
     test_data = pd.read_csv(data_dir / 'test_data.csv', index_col=0)
     scaler = joblib.load(data_dir / 'scaler.pkl')
 
+    train_size = int(0.8 * len(train_data))  # 80% of training data
+    val_data = train_data[train_size:]
+    train_data = train_data[:train_size]
+
     print("\nData Statistics:")
     print("Training data:")
     print(train_data.describe())
@@ -163,15 +241,19 @@ def main():
     print(f"Sampling frequency: {train_data.index[1] - train_data.index[0]}")
 
     X_train, y_train = prepare_data(train_data.values, sequence_length)
+    X_val, y_val = prepare_data(val_data.values, sequence_length)
     X_test, y_test = prepare_data(test_data.values, sequence_length)
 
     print(f"Training data shape: {X_train.shape}")
+    print(f"Validation data shape: {X_val.shape}")
     print(f"Testing data shape: {X_test.shape}")
 
     train_dataset = torch.utils.data.TensorDataset(X_train, y_train)
+    val_dataset = torch.utils.data.TensorDataset(X_val, y_val)
     test_dataset = torch.utils.data.TensorDataset(X_test, y_test)
 
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size)
 
     model = PricePredictionModel(input_size=5, hidden_size=hidden_size).to(device)
@@ -182,9 +264,16 @@ def main():
 
     print("Training model...")
     train_losses, val_losses = train_model(
-        model, train_loader, test_loader,
+        model, train_loader, val_loader,
         criterion, optimizer, num_epochs, device, scaler
     )
+
+    model.eval()
+    test_loss = evaluate_model(model, test_loader, criterion, device, scaler)
+    print(f"Final Test Loss: {test_loss:.2f}")
+
+    print("Plotting predictions...")
+    plot_predictions(model, test_loader, scaler, device, results_dir, test_data, sequence_length)
 
     # Save model and scaler
     torch.save({
