@@ -3,13 +3,16 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from pathlib import Path
 import joblib
+import sys
+project_root = Path(__file__).resolve().parents[2]
+sys.path.append(str(project_root))
 
 
 class BasicDataProcessor:
     def __init__(self, raw_data_path):
         self.raw_data_path = Path(raw_data_path)
         self.scaler = MinMaxScaler()
-        self.processed_dir = Path('../../data/processed/bitcoin-historical-data')
+        self.processed_dir = Path(project_root / 'experiments/experiment_1/processed_data')
 
     def process(self, start_date='2022-01-01', resample_rule='1h'):
         """
@@ -47,7 +50,7 @@ class BasicDataProcessor:
         scaled_data = self.scaler.fit_transform(df[features])
         df_scaled = pd.DataFrame(scaled_data, columns=features, index=df.index)
 
-        # train-test split (80-20)
+        # train-test split (80-20), info: this splits after scaling which causes data leakage
         train_size = int(len(df_scaled) * 0.8)
         train_data = df_scaled[:train_size]
         test_data = df_scaled[train_size:]
@@ -71,7 +74,7 @@ class BasicDataProcessor:
 
 
 def main():
-    processor = BasicDataProcessor('../../data/raw/bitcoin-historical-data/btcusd_1-min_data.csv')
+    processor = BasicDataProcessor(project_root / 'data/raw/bitcoin-historical-data/btcusd_1-min_data.csv')
 
     # Process only recent data (2022+) and resample to 4-hour intervals
     processed_data = processor.process(
