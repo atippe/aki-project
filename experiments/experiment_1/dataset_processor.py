@@ -9,7 +9,7 @@ class BasicDataProcessor:
     def __init__(self, raw_data_path):
         self.raw_data_path = Path(raw_data_path)
         self.scaler = MinMaxScaler()
-        self.processed_dir = Path('processed/bitcoin-historical-data')
+        self.processed_dir = Path('../../data/processed/bitcoin-historical-data')
 
     def process(self, start_date='2022-01-01', resample_rule='1h'):
         """
@@ -71,7 +71,7 @@ class BasicDataProcessor:
 
 
 def main():
-    processor = BasicDataProcessor('raw/bitcoin-historical-data/btcusd_1-min_data.csv')
+    processor = BasicDataProcessor('../../data/raw/bitcoin-historical-data/btcusd_1-min_data.csv')
 
     # Process only recent data (2022+) and resample to 4-hour intervals
     processed_data = processor.process(
