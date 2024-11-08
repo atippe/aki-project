@@ -12,7 +12,7 @@ class BasicDataProcessor:
     def __init__(self, raw_data_path):
         self.raw_data_path = Path(raw_data_path)
         self.scaler = MinMaxScaler()
-        self.processed_dir = Path(project_root / 'experiments/experiment_1/processed_data')
+        self.processed_dir = Path(Path(__file__).parent / 'processed_data')
 
     def process(self, start_date='2022-01-01', resample_rule='1h'):
         """
@@ -45,18 +45,30 @@ class BasicDataProcessor:
         # Remove any NaN values
         df = df.dropna()
 
-        print("Scaling data...")
+        # first split the data
         features = ['Open', 'High', 'Low', 'Close', 'Volume']
-        scaled_data = self.scaler.fit_transform(df[features])
-        df_scaled = pd.DataFrame(scaled_data, columns=features, index=df.index)
+        train_size = int(len(df) * 0.8)
+        train_data = df[:train_size]
+        test_data = df[train_size:]
 
-        # train-test split (80-20), info: this splits after scaling which causes data leakage
-        train_size = int(len(df_scaled) * 0.8)
-        train_data = df_scaled[:train_size]
-        test_data = df_scaled[train_size:]
+        # scale using only training data
+        print("Scaling data...")
+        self.scaler.fit(train_data[features])
+
+        # transform both sets using the scaler fit on training data
+        train_scaled = pd.DataFrame(
+            self.scaler.transform(train_data[features]),
+            columns=features,
+            index=train_data.index
+        )
+        test_scaled = pd.DataFrame(
+            self.scaler.transform(test_data[features]),
+            columns=features,
+            index=test_data.index
+        )
 
         print("Saving processed data...")
-        self.save_processed_data(train_data, test_data, df)
+        self.save_processed_data(train_scaled, test_scaled, df)
 
         return {
             'train_data': train_data,
