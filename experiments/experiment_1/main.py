@@ -3,7 +3,7 @@ import torch.nn as nn
 import numpy as np
 import pandas as pd
 from pathlib import Path
-from custom_lstm import PricePredictionModel
+from experiments.experiment_2.custom_lstm import PricePredictionModel
 import matplotlib.pyplot as plt
 import joblib
 
