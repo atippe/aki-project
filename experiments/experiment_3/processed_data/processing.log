@@ -1,0 +1,91 @@
+No features provided. Using default features: ['Open', 'High', 'Low', 'Close', 'Volume']
+
+==================================================
+TIME SERIES DATA PROCESSING
+==================================================
+
+Loading data from:
+File: btcusd_1-min_data.csv
+
+Feature validation:
+Required features: ['Open', 'High', 'Low', 'Close', 'Volume']
+All required features found in dataset
+
+Feature statistics:
+
+Open:
+  Min: 3.80
+  Max: 93411.00
+  Mean: 14275.26
+  Std: 19123.97
+
+High:
+  Min: 3.80
+  Max: 93483.00
+  Mean: 14281.46
+  Std: 19131.46
+
+Low:
+  Min: 3.80
+  Max: 93271.00
+  Mean: 14268.88
+  Std: 19116.37
+
+Close:
+  Min: 3.80
+  Max: 93436.00
+  Mean: 14275.29
+  Std: 19124.07
+
+Volume:
+  Min: 0.00
+  Max: 5853.85
+  Mean: 5.48
+  Std: 22.98
+
+Initial data size: 6714281 entries
+
+Filtering data from 2022-01-01...
+Remaining entries after filtering: 1455161
+
+Resampling data to 4h intervals...
+Final entries after resampling: 6120
+
+Data split:
+Training set: 4896 entries (80%)
+Test set: 1224 entries (20%)
+
+Scaling data...
+
+Creating sequences (length=60)...
+
+Creating training sequences...
+
+Sequence creation details:
+Target feature: Close (index: 3)
+Available features: ['Open', 'High', 'Low', 'Close', 'Volume']
+Sequence length: 60
+Created 4836 sequences
+Target value range: min=0.0000, max=1.0000
+
+Creating testing sequences...
+
+Sequence creation details:
+Target feature: Close (index: 3)
+Available features: ['Open', 'High', 'Low', 'Close', 'Volume']
+Sequence length: 60
+Created 1164 sequences
+Target value range: min=0.6173, max=1.3337
+
+Sequence shapes:
+X_train: (4836, 60, 5)
+y_train: (4836,)
+X_test: (1164, 60, 5)
+y_test: (1164,)
+
+Converting to PyTorch tensors...
+
+Saving processed data...
+
+Processing completed in 4.69 seconds
+==================================================
