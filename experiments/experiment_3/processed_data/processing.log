@@ -1,4 +1,5 @@
 No features provided. Using default features: ['Open', 'High', 'Low', 'Close', 'Volume']
+No target feature provided. Using default target: Close
 
 ==================================================
 TIME SERIES DATA PROCESSING
@@ -9,6 +10,7 @@ File: btcusd_1-min_data.csv
 
 Feature validation:
 Required features: ['Open', 'High', 'Low', 'Close', 'Volume']
+Target feature: Close
 All required features found in dataset
 
 Feature statistics:
@@ -87,5 +89,5 @@ Converting to PyTorch tensors...
 
 Saving processed data...
 
-Processing completed in 4.69 seconds
+Processing completed in 4.63 seconds
 ==================================================

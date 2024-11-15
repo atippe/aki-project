@@ -13,20 +13,18 @@ sys.path.append(str(project_root))
 
 
 class BasicDataProcessor:
-    def __init__(self, raw_data_path, features=None, target_feature='Close'):
+    def __init__(self, raw_data_path, features=None, target_feature=None):
         self.raw_data_path = Path(raw_data_path)
         self.scaler = MinMaxScaler()
         self.processed_dir = Path(Path(__file__).parent / 'processed_data')
         # Default OHLCV features if none provided
         self.features = features or ['Open', 'High', 'Low', 'Close', 'Volume']
-        self.target_feature = target_feature
+        self.target_feature = target_feature or 'Close'
         self.setup_logging()
         if features is None:
             self.logger.info(f"No features provided. Using default features: {self.features}")
         if target_feature is None:
             self.logger.info(f"No target feature provided. Using default target: {self.target_feature}")
-        if target_feature not in self.features:
-            self.logger.warning(f"Target feature '{target_feature}' not found in features list")
 
     def setup_logging(self):
         """Setup logging configuration"""
@@ -50,9 +48,14 @@ class BasicDataProcessor:
             self.logger.error(f"Missing required features: {missing_features}")
             self.logger.error(f"Available features: {df.columns.tolist()}")
             raise ValueError(f"Dataset missing required features: {missing_features}")
+        if self.target_feature not in df.columns:
+            self.logger.error(f"Target feature '{self.target_feature}' not found in dataset")
+            self.logger.error(f"Available features: {df.columns.tolist()}")
+            raise ValueError(f"Dataset missing target feature: {self.target_feature}")
 
         self.logger.info("\nFeature validation:")
         self.logger.info(f"Required features: {self.features}")
+        self.logger.info(f"Target feature: {self.target_feature}")
         self.logger.info("All required features found in dataset")
 
         self.logger.info("\nFeature statistics:")
