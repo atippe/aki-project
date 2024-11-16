@@ -13,18 +13,12 @@ sys.path.append(str(project_root))
 
 
 class BasicDataProcessor:
-    def __init__(self, raw_data_path, features=None, target_feature=None):
+    def __init__(self, raw_data_path):
         self.raw_data_path = Path(raw_data_path)
         self.scaler = MinMaxScaler()
         self.processed_dir = Path(Path(__file__).parent / 'processed_data')
-        # Default OHLCV features if none provided
-        self.features = features or ['Open', 'High', 'Low', 'Close', 'Volume']
-        self.target_feature = target_feature or 'Close'
         self.setup_logging()
-        if features is None:
-            self.logger.info(f"No features provided. Using default features: {self.features}")
-        if target_feature is None:
-            self.logger.info(f"No target feature provided. Using default target: {self.target_feature}")
+
 
     def setup_logging(self):
         """Setup logging configuration"""
@@ -41,25 +35,32 @@ class BasicDataProcessor:
         )
         self.logger = logging.getLogger(__name__)
 
-    def validate_features(self, df):
-        """Validate that all required features exist in the dataset"""
-        missing_features = [f for f in self.features if f not in df.columns]
+    def validate_features(self, df, features, target_feature):
+        """
+        Validate that all required features exist in the dataset
+
+        Args:
+            df: DataFrame to validate
+            features: List of features to check
+            target_feature: Target feature to check
+        """
+        missing_features = [f for f in features if f not in df.columns]
         if missing_features:
             self.logger.error(f"Missing required features: {missing_features}")
             self.logger.error(f"Available features: {df.columns.tolist()}")
             raise ValueError(f"Dataset missing required features: {missing_features}")
-        if self.target_feature not in df.columns:
-            self.logger.error(f"Target feature '{self.target_feature}' not found in dataset")
+        if target_feature not in df.columns:
+            self.logger.error(f"Target feature '{target_feature}' not found in dataset")
             self.logger.error(f"Available features: {df.columns.tolist()}")
-            raise ValueError(f"Dataset missing target feature: {self.target_feature}")
+            raise ValueError(f"Dataset missing target feature: {target_feature}")
 
         self.logger.info("\nFeature validation:")
-        self.logger.info(f"Required features: {self.features}")
-        self.logger.info(f"Target feature: {self.target_feature}")
+        self.logger.info(f"Required features: {features}")
+        self.logger.info(f"Target feature: {target_feature}")
         self.logger.info("All required features found in dataset")
 
         self.logger.info("\nFeature statistics:")
-        for feature in self.features:
+        for feature in features:
             stats = df[feature].describe()
             self.logger.info(f"\n{feature}:")
             self.logger.info(f"  Min: {stats['min']:.2f}")
@@ -67,13 +68,14 @@ class BasicDataProcessor:
             self.logger.info(f"  Mean: {stats['mean']:.2f}")
             self.logger.info(f"  Std: {stats['std']:.2f}")
 
-    def create_sequences(self, data, seq_length=60):
+    def create_sequences(self, data, seq_length=60, target_feature='Close'):
         """
         Create sequences for time series prediction
 
         Args:
             data (DataFrame): Scaled data with OHLCV columns
             seq_length (int): Length of the sequence
+            target_feature (str): Feature to use as target for prediction
 
         Returns:
             tuple: (sequences array, targets array)
@@ -83,10 +85,10 @@ class BasicDataProcessor:
 
         # Convert DataFrame to numpy array for faster processing
         data_array = data.values
-        target_idx = data.columns.get_loc(self.target_feature)
+        target_idx = data.columns.get_loc(target_feature)
 
         self.logger.info(f"\nSequence creation details:")
-        self.logger.info(f"Target feature: {self.target_feature} (index: {target_idx})")
+        self.logger.info(f"Target feature: {target_feature} (index: {target_idx})")
         self.logger.info(f"Available features: {list(data.columns)}")
         self.logger.info(f"Sequence length: {seq_length}")
 
@@ -104,9 +106,21 @@ class BasicDataProcessor:
 
         return sequences, targets
 
-    def process(self, start_date='2022-01-01', resample_rule='1h', seq_length=60):
-        """Process the data and create PyTorch tensors"""
+    def process(self, start_date='2022-01-01', resample_rule='1h', seq_length=60, features=None, target_feature='Close', split_ratios=(0.7, 0.15, 0.15)):
+        """
+        Process the data and create PyTorch tensors
+        Args:
+            start_date (str): Start date for data (e.g., '2022-01-01')
+            resample_rule (str): Resample frequency ('1h' for hourly, '4h' for 4 hours)
+            seq_length (int): Length of the sequence
+            features (list): List of features to use, defaults to OHLCV
+            target_feature (str): Target feature to predict
+            split_ratios (tuple): (train, val, test) ratios that sum to 1.0
+        """
         start_time = time.time()
+
+        if sum(split_ratios) != 1.0:
+            raise ValueError("Split ratios must sum to 1.0")
 
         self.logger.info(f"\n{'=' * 50}")
         self.logger.info("TIME SERIES DATA PROCESSING")
@@ -116,7 +130,7 @@ class BasicDataProcessor:
         self.logger.info(f"File: {self.raw_data_path.name}")
         df = pd.read_csv(self.raw_data_path)
 
-        self.validate_features(df)
+        self.validate_features(df, features, target_feature)
 
         df['Timestamp'] = pd.to_datetime(df['Timestamp'], unit='s')
         df.set_index('Timestamp', inplace=True)
