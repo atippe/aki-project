@@ -106,12 +106,13 @@ class BasicDataProcessor:
 
         return sequences, targets
 
-    def process(self, start_date='2022-01-01', resample_rule='1h', seq_length=60, features=None, target_feature='Close', split_ratios=(0.7, 0.15, 0.15)):
+    def process(self, start_date='2022-01-01', resample_rule='1h', agg_dict=None, seq_length=60, features=None, target_feature=None, split_ratios=(0.7, 0.15, 0.15)):
         """
         Process the data and create PyTorch tensors
         Args:
             start_date (str): Start date for data (e.g., '2022-01-01')
             resample_rule (str): Resample frequency ('1h' for hourly, '4h' for 4 hours)
+            agg_dict (dict): Custom aggregation rules for resampling, e.g., {'Open': 'first', 'Custom': 'mean'}
             seq_length (int): Length of the sequence
             features (list): List of features to use, defaults to OHLCV
             target_feature (str): Target feature to predict
@@ -130,6 +131,14 @@ class BasicDataProcessor:
         self.logger.info(f"File: {self.raw_data_path.name}")
         df = pd.read_csv(self.raw_data_path)
 
+        if features is None:
+            self.logger.info("\nNo features specified, using default OHLCV")
+            features = ['Open', 'High', 'Low', 'Close', 'Volume']
+
+        if target_feature is None:
+            self.logger.info("\nNo target feature specified, using default 'Close'")
+            target_feature = 'Close'
+
         self.validate_features(df, features, target_feature)
 
         df['Timestamp'] = pd.to_datetime(df['Timestamp'], unit='s')
@@ -143,25 +152,35 @@ class BasicDataProcessor:
         self.logger.info(f"Remaining entries after filtering: {len(df)}")
 
         self.logger.info(f"\nResampling data to {resample_rule} intervals...")
-        df = df.resample(resample_rule).agg({
-            'Open': 'first',
-            'High': 'max',
-            'Low': 'min',
-            'Close': 'last',
-            'Volume': 'sum'
-        })
+
+        if agg_dict is None:
+            self.logger.info("\nNo aggregation rules specified, using default for OHLCV")
+            agg_dict = {
+                'Open': 'first',
+                'High': 'max',
+                'Low': 'min',
+                'Close': 'last',
+                'Volume': 'sum'
+            }
+
+        self.logger.info(f"Using aggregation methods: {agg_dict}")
+        df = df.resample(resample_rule).agg(agg_dict)
 
         df = df.dropna()
         self.logger.info(f"Final entries after resampling: {len(df)}")
 
-        features = ['Open', 'High', 'Low', 'Close', 'Volume']
-        train_size = int(len(df) * 0.8)
+        # Split data into train, validation, and test sets
+        train_size = int(len(df) * split_ratios[0])
+        val_size = int(len(df) * split_ratios[1])
+
         train_data = df[:train_size]
-        test_data = df[train_size:]
+        val_data = df[train_size:train_size + val_size]
+        test_data = df[train_size + val_size:]
 
         self.logger.info("\nData split:")
-        self.logger.info(f"Training set: {len(train_data)} entries (80%)")
-        self.logger.info(f"Test set: {len(test_data)} entries (20%)")
+        self.logger.info(f"Training set: {len(train_data)} entries ({split_ratios[0] * 100}%)")
+        self.logger.info(f"Validation set: {len(val_data)} entries ({split_ratios[1] * 100}%)")
+        self.logger.info(f"Test set: {len(test_data)} entries ({split_ratios[2] * 100}%)")
 
         self.logger.info("\nScaling data...")
         self.scaler.fit(train_data[features])
@@ -170,6 +189,11 @@ class BasicDataProcessor:
             self.scaler.transform(train_data[features]),
             columns=features,
             index=train_data.index
+        )
+        val_scaled = pd.DataFrame(
+            self.scaler.transform(val_data[features]),
+            columns=features,
+            index=val_data.index
         )
         test_scaled = pd.DataFrame(
             self.scaler.transform(test_data[features]),
@@ -181,24 +205,33 @@ class BasicDataProcessor:
 
         self.logger.info("\nCreating training sequences...")
         X_train, y_train = self.create_sequences(train_scaled, seq_length)
+
+        self.logger.info("\nCreating validation sequences...")
+        X_val, y_val = self.create_sequences(val_scaled, seq_length)
+
         self.logger.info("\nCreating testing sequences...")
         X_test, y_test = self.create_sequences(test_scaled, seq_length)
 
         self.logger.info("\nSequence shapes:")
         self.logger.info(f"X_train: {X_train.shape}")
         self.logger.info(f"y_train: {y_train.shape}")
+        self.logger.info(f"X_val: {X_val.shape}")
+        self.logger.info(f"y_val: {y_val.shape}")
         self.logger.info(f"X_test: {X_test.shape}")
         self.logger.info(f"y_test: {y_test.shape}")
 
         self.logger.info("\nConverting to PyTorch tensors...")
         X_train_tensor = torch.FloatTensor(X_train)
         y_train_tensor = torch.FloatTensor(y_train)
+        X_val_tensor = torch.FloatTensor(X_val)
+        y_val_tensor = torch.FloatTensor(y_val)
         X_test_tensor = torch.FloatTensor(X_test)
         y_test_tensor = torch.FloatTensor(y_test)
 
         self.logger.info("\nSaving processed data...")
         self.save_processed_data(
             X_train_tensor, y_train_tensor,
+            X_val_tensor, y_val_tensor,
             X_test_tensor, y_test_tensor,
             df, seq_length
         )
@@ -210,6 +243,8 @@ class BasicDataProcessor:
         return {
             'X_train': X_train_tensor,
             'y_train': y_train_tensor,
+            'X_val': X_val_tensor,
+            'y_val': y_val_tensor,
             'X_test': X_test_tensor,
             'y_test': y_test_tensor,
             'scaler': self.scaler,
@@ -217,7 +252,7 @@ class BasicDataProcessor:
             'seq_length': seq_length
         }
 
-    def save_processed_data(self, X_train, y_train, X_test, y_test, original_data, seq_length):
+    def save_processed_data(self, X_train, y_train, X_val, y_val, X_test, y_test, original_data, seq_length):
         """Save each component separately"""
         # Create subdirectories
         tensors_dir = self.processed_dir / 'tensors'
@@ -226,6 +261,8 @@ class BasicDataProcessor:
         # Save tensors
         torch.save(X_train, tensors_dir / 'X_train.pt')
         torch.save(y_train, tensors_dir / 'y_train.pt')
+        torch.save(X_val, tensors_dir / 'X_val.pt')
+        torch.save(y_val, tensors_dir / 'y_val.pt')
         torch.save(X_test, tensors_dir / 'X_test.pt')
         torch.save(y_test, tensors_dir / 'y_test.pt')
 
@@ -242,6 +279,8 @@ class BasicDataProcessor:
             'data_shape': {
                 'X_train': X_train.shape,
                 'y_train': y_train.shape,
+                'X_val': X_val.shape,
+                'y_val': y_val.shape,
                 'X_test': X_test.shape,
                 'y_test': y_test.shape
             },
@@ -253,8 +292,6 @@ class BasicDataProcessor:
         with open(self.processed_dir / 'metadata.pkl', 'wb') as f:
             pickle.dump(metadata, f)
 
-        print(f"Saved processed data to {self.processed_dir}")
-
     @staticmethod
     def load_processed_data(processed_dir):
         """Load all processed data components"""
@@ -264,6 +301,8 @@ class BasicDataProcessor:
         # Load tensors
         X_train = torch.load(tensors_dir / 'X_train.pt')
         y_train = torch.load(tensors_dir / 'y_train.pt')
+        X_val = torch.load(tensors_dir / 'X_val.pt')
+        y_val = torch.load(tensors_dir / 'y_val.pt')
         X_test = torch.load(tensors_dir / 'X_test.pt')
         y_test = torch.load(tensors_dir / 'y_test.pt')
 
@@ -281,6 +320,8 @@ class BasicDataProcessor:
         return {
             'X_train': X_train,
             'y_train': y_train,
+            'X_val': X_val,
+            'y_val': y_val,
             'X_test': X_test,
             'y_test': y_test,
             'scaler': scaler,

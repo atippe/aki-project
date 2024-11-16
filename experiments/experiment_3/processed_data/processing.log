@@ -1,5 +1,3 @@
-No features provided. Using default features: ['Open', 'High', 'Low', 'Close', 'Volume']
-No target feature provided. Using default target: Close
 
 ==================================================
 TIME SERIES DATA PROCESSING
@@ -7,6 +5,10 @@ TIME SERIES DATA PROCESSING
 
 Loading data from:
 File: btcusd_1-min_data.csv
+
+No features specified, using default OHLCV
+
+No target feature specified, using default 'Close'
 
 Feature validation:
 Required features: ['Open', 'High', 'Low', 'Close', 'Volume']
@@ -51,11 +53,15 @@ Filtering data from 2022-01-01...
 Remaining entries after filtering: 1455161
 
 Resampling data to 4h intervals...
+
+No aggregation rules specified, using default for OHLCV
+Using aggregation methods: {'Open': 'first', 'High': 'max', 'Low': 'min', 'Close': 'last', 'Volume': 'sum'}
 Final entries after resampling: 6120
 
 Data split:
-Training set: 4896 entries (80%)
-Test set: 1224 entries (20%)
+Training set: 4284 entries (70.0%)
+Validation set: 918 entries (15.0%)
+Test set: 918 entries (15.0%)
 
 Scaling data...
 
@@ -67,8 +73,17 @@ Sequence creation details:
 Target feature: Close (index: 3)
 Available features: ['Open', 'High', 'Low', 'Close', 'Volume']
 Sequence length: 60
-Created 4836 sequences
+Created 4224 sequences
 Target value range: min=0.0000, max=1.0000
+
+Creating validation sequences...
+
+Sequence creation details:
+Target feature: Close (index: 3)
+Available features: ['Open', 'High', 'Low', 'Close', 'Volume']
+Sequence length: 60
+Created 858 sequences
+Target value range: min=0.7132, max=1.7881
 
 Creating testing sequences...
 
@@ -76,18 +91,20 @@ Sequence creation details:
 Target feature: Close (index: 3)
 Available features: ['Open', 'High', 'Low', 'Close', 'Volume']
 Sequence length: 60
-Created 1164 sequences
-Target value range: min=0.6173, max=1.3337
+Created 858 sequences
+Target value range: min=1.1038, max=2.3848
 
 Sequence shapes:
-X_train: (4836, 60, 5)
-y_train: (4836,)
-X_test: (1164, 60, 5)
-y_test: (1164,)
+X_train: (4224, 60, 5)
+y_train: (4224,)
+X_val: (858, 60, 5)
+y_val: (858,)
+X_test: (858, 60, 5)
+y_test: (858,)
 
 Converting to PyTorch tensors...
 
 Saving processed data...
 
-Processing completed in 4.63 seconds
+Processing completed in 4.58 seconds
 ==================================================
