@@ -233,7 +233,7 @@ class BasicDataProcessor:
             X_train_tensor, y_train_tensor,
             X_val_tensor, y_val_tensor,
             X_test_tensor, y_test_tensor,
-            df, seq_length
+            df, seq_length, features
         )
 
         processing_time = time.time() - start_time
@@ -252,7 +252,7 @@ class BasicDataProcessor:
             'seq_length': seq_length
         }
 
-    def save_processed_data(self, X_train, y_train, X_val, y_val, X_test, y_test, original_data, seq_length):
+    def save_processed_data(self, X_train, y_train, X_val, y_val, X_test, y_test, original_data, seq_length, features):
         """Save each component separately"""
         # Create subdirectories
         tensors_dir = self.processed_dir / 'tensors'
@@ -276,6 +276,7 @@ class BasicDataProcessor:
         # Save metadata
         metadata = {
             'seq_length': seq_length,
+            'feature_indices': {name: idx for idx, name in enumerate(features)},
             'data_shape': {
                 'X_train': X_train.shape,
                 'y_train': y_train.shape,

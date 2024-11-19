@@ -6,13 +6,40 @@ from pathlib import Path
 from custom_lstm import PricePredictionModel
 import matplotlib.pyplot as plt
 import pickle
+import logging
 
 from experiments.experiment_3.dataset_processor import BasicDataProcessor
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs, device, scaler):
+def setup_logging(results_dir):
+    results_dir.mkdir(parents=True, exist_ok=True)
+    log_file = results_dir / 'training.log'
+
+    # Configure logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(message)s',
+        handlers=[
+            logging.FileHandler(log_file, mode='w'),
+            logging.StreamHandler()
+        ]
+    )
+    return logging.getLogger(__name__)
+
+
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs, device, scaler, logger, close_idx, feature_count):
+    logger.info("Starting training process")
+    logger.info(f"Model architecture:\n{model}")
+    logger.info(f"Training parameters: epochs={num_epochs}, device={device}")
+    logger.info(f"Optimizer: {optimizer}")
+    logger.info(f"Loss function: {criterion}")
+
     train_losses = []
     val_losses = []
+
+    # Log initial dataset sizes
+    logger.info(f"Training batches: {len(train_loader)}")
+    logger.info(f"Validation batches: {len(val_loader)}")
 
     for epoch in range(num_epochs):
         model.train()
@@ -20,52 +47,52 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         total_train_loss_scaled = 0
         num_batches = 0
 
+        # Log epoch start
+        logger.info(f"\nStarting Epoch [{epoch + 1}/{num_epochs}]")
+
         for batch_idx, (batch_X, batch_y) in enumerate(train_loader):
             batch_X, batch_y = batch_X.to(device), batch_y.to(device)
 
+            # Log batch shapes occasionally
+            if batch_idx == 0:
+                logger.debug(f"Batch shapes - X: {batch_X.shape}, y: {batch_y.shape}")
+
             optimizer.zero_grad()
             outputs = model(batch_X)
-
-            # Normalized/Scaled loss (0-1 range)
             scaled_loss = criterion(outputs, batch_y.unsqueeze(1))
             scaled_loss.backward()
             optimizer.step()
 
-            # For monitoring, calculate both losses
             with torch.no_grad():
-                # Track normalized loss
                 total_train_loss_scaled += scaled_loss.item()
 
-                # Calculate price-scale loss
+                # Price scale loss calculation
                 scaled_pred = outputs.cpu().numpy()
                 scaled_target = batch_y.cpu().numpy()
 
-                pred_features = np.zeros((scaled_pred.shape[0], 5))
-                pred_features[:, 1] = scaled_pred[:, 0]
+                pred_features = np.zeros((scaled_pred.shape[0], feature_count))
+                pred_features[:, close_idx] = scaled_pred.flatten()
+                target_features = np.zeros((scaled_target.shape[0], feature_count))
+                target_features[:, close_idx] = scaled_target
 
-                target_features = np.zeros((scaled_target.shape[0], 5))
-                target_features[:, 3] = scaled_target  # Index 3 for Close price
-
-                price_pred = scaler.inverse_transform(pred_features)[:, 1]
-                price_target = scaler.inverse_transform(target_features)[:, 1]
-
+                price_pred = scaler.inverse_transform(pred_features)[:, close_idx]
+                price_target = scaler.inverse_transform(target_features)[:, close_idx]
                 price_scale_loss = np.mean((price_pred - price_target) ** 2)
 
+                # Log first batch details in first epoch
                 if epoch == 0 and batch_idx == 0:
-                    print("\nDebug information:")
-                    print(f"Scaled predictions (first 3):\n{scaled_pred[:3]}")
-                    print(f"Scaled targets (first 3):\n{scaled_target[:3]}")
-                    print(f"Normalized MSE: {scaled_loss.item():.6f}")
-                    print(f"Normalized RMSE: {np.sqrt(scaled_loss.item()):.6f}")
-                    print(f"Price predictions (first 3):\n{price_pred[:3]}")
-                    print(f"Price targets (first 3):\n{price_target[:3]}")
-                    print(f"Price-scale MSE: {price_scale_loss:.2f}")
-                    print(f"Price-scale RMSE: {np.sqrt(price_scale_loss):.2f}\n")
+                    logger.info("\nFirst batch details:")
+                    logger.info(f"Scaled predictions (first 3):\n{scaled_pred[:3]}")
+                    logger.info(f"Scaled targets (first 3):\n{scaled_target[:3]}")
+                    logger.info(f"Price predictions (first 3):\n{price_pred[:3]}")
+                    logger.info(f"Price targets (first 3):\n{price_target[:3]}")
+                    logger.info(f"Initial normalized MSE: {scaled_loss.item():.6f}")
+                    logger.info(f"Initial price-scale MSE: {price_scale_loss:.2f}")
 
             total_train_loss += price_scale_loss
             num_batches += 1
 
-        # Validation
+        # Validation phase
         model.eval()
         total_val_loss = 0
         total_val_loss_scaled = 0
@@ -84,20 +111,20 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
                 scaled_pred = outputs.cpu().numpy()
                 scaled_target = batch_y.cpu().numpy()
 
-                pred_features = np.zeros((scaled_pred.shape[0], 5))
-                pred_features[:, 1] = scaled_pred[:, 0]
+                pred_features = np.zeros((scaled_pred.shape[0], feature_count))
+                pred_features[:, close_idx] = scaled_pred.flatten()
 
-                target_features = np.zeros((scaled_target.shape[0], 5))
-                target_features[:, 3] = scaled_target  # Index 3 for Close price
+                target_features = np.zeros((scaled_target.shape[0], feature_count))
+                target_features[:, close_idx] = scaled_target
 
-                price_pred = scaler.inverse_transform(pred_features)[:, 1]
-                price_target = scaler.inverse_transform(target_features)[:, 1]
+                price_pred = scaler.inverse_transform(pred_features)[:, close_idx]
+                price_target = scaler.inverse_transform(target_features)[:, close_idx]
 
                 price_scale_loss = np.mean((price_pred - price_target) ** 2)
                 total_val_loss += price_scale_loss
                 num_val_batches += 1
 
-        # Calculate averages
+        # Calculate and log metrics
         avg_train_loss = total_train_loss / num_batches
         avg_val_loss = total_val_loss / num_val_batches
         avg_train_loss_scaled = total_train_loss_scaled / num_batches
@@ -106,12 +133,15 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         train_losses.append(avg_train_loss)
         val_losses.append(avg_val_loss)
 
-        print(f'Epoch [{epoch + 1}/{num_epochs}]:')
-        print(f'  Normalized - Train MSE: {avg_train_loss_scaled:.6f}, RMSE: {np.sqrt(avg_train_loss_scaled):.6f}')
-        print(f'  Normalized - Val MSE: {avg_val_loss_scaled:.6f}, RMSE: {np.sqrt(avg_val_loss_scaled):.6f}')
-        print(f'  Price Scale - Train MSE: {avg_train_loss:.2f}, RMSE: ${np.sqrt(avg_train_loss):.2f}')
-        print(f'  Price Scale - Val MSE: {avg_val_loss:.2f}, RMSE: ${np.sqrt(avg_val_loss):.2f}')
+        # Log epoch results
+        logger.info(f'Epoch [{epoch + 1}/{num_epochs}] Summary:')
+        logger.info(
+            f'  Normalized - Train MSE: {avg_train_loss_scaled:.6f}, RMSE: {np.sqrt(avg_train_loss_scaled):.6f}')
+        logger.info(f'  Normalized - Val MSE: {avg_val_loss_scaled:.6f}, RMSE: {np.sqrt(avg_val_loss_scaled):.6f}')
+        logger.info(f'  Price Scale - Train MSE: {avg_train_loss:.2f}, RMSE: ${np.sqrt(avg_train_loss):.2f}')
+        logger.info(f'  Price Scale - Val MSE: {avg_val_loss:.2f}, RMSE: ${np.sqrt(avg_val_loss):.2f}')
 
+    logger.info("Training completed")
     return train_losses, val_losses
 
 
@@ -123,14 +153,35 @@ def main():
     learning_rate = 0.0005
     device = 'cpu'
 
-    # Setup directories
+    # Setup directories and logging
     data_dir = Path(__file__).parent / 'processed_data'
     results_dir = Path(__file__).parent / 'results'
     results_dir.mkdir(exist_ok=True)
 
-    # Load pre-processed data
-    print("Loading pre-processed data...")
+    logger = setup_logging(results_dir)
+
+    # Log training configuration
+    logger.info("=== Starting new training run ===")
+    logger.info(f"Parameters:")
+    logger.info(f"  Hidden size: {hidden_size}")
+    logger.info(f"  Epochs: {num_epochs}")
+    logger.info(f"  Batch size: {batch_size}")
+    logger.info(f"  Learning rate: {learning_rate}")
+    logger.info(f"  Device: {device}")
+
+    # Load data
+    logger.info("Loading pre-processed data...")
     processed_data = BasicDataProcessor.load_processed_data(data_dir)
+
+    # Log dataset information
+    feature_count = len(processed_data['metadata']['feature_indices'])
+    close_idx = processed_data['metadata']['feature_indices']['Close']
+    logger.info(f"Sequence length: {processed_data['metadata']['seq_length']}")
+    logger.info(f"Feature count: {feature_count}")
+    logger.info(f"Close price index: {close_idx}")
+    logger.info(f"Training set shape: {processed_data['X_train'].shape}")
+    logger.info(f"Validation set shape: {processed_data['X_val'].shape}")
+    logger.info(f"Test set shape: {processed_data['X_test'].shape}")
 
     # Extract metadata
     metadata = processed_data['metadata']
@@ -165,12 +216,10 @@ def main():
         batch_size=batch_size
     )
 
-    # Initialize model and training components
-    input_size = processed_data['X_train'].shape[2]  # Get input size from data
-    model = PricePredictionModel(
-        input_size=input_size,
-        hidden_size=hidden_size
-    ).to(device)
+    # Create model
+    input_size = processed_data['X_train'].shape[2]
+    model = PricePredictionModel(input_size=input_size, hidden_size=hidden_size).to(device)
+    logger.info(f"Model input size: {input_size}")
 
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(
@@ -180,26 +229,23 @@ def main():
     )
 
     # Training
-    print("Training model...")
+    logger.info("Starting training process...")
     train_losses, val_losses = train_model(
-        model,
-        train_loader,
-        val_loader,
-        criterion,
-        optimizer,
-        num_epochs,
-        device,
-        processed_data['scaler']
+        model, train_loader, val_loader, criterion, optimizer,
+        num_epochs, device, processed_data['scaler'], logger, close_idx, feature_count
     )
 
+
     # Save results
+    logger.info("Saving model and results...")
+    save_path = results_dir / 'lstm_model.pth'
     torch.save({
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
         'train_losses': train_losses,
         'val_losses': val_losses,
         'metadata': metadata
-    }, results_dir / 'lstm_model.pth')
+    }, save_path)
 
     # Plot training history
     plt.figure(figsize=(10, 5))
