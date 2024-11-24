@@ -13,6 +13,8 @@ import logging
 from experiments.experiment_4.dataset_processor import BasicDataProcessor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
+from experiments.experiment_4.ssa_optimizer import SSAOptimizer
+
 
 def setup_logging(results_dir):
     results_dir.mkdir(parents=True, exist_ok=True)
@@ -30,12 +32,13 @@ def setup_logging(results_dir):
     return logging.getLogger(__name__)
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs, device, scaler, logger, close_idx,
+def train_model(model, train_loader, val_loader, criterion, ssa_optimizer, num_epochs, device, scaler, logger,
+                close_idx,
                 feature_count):
     logger.info("Starting training process")
     logger.info(f"Model architecture:\n{model}")
     logger.info(f"Training parameters: epochs={num_epochs}, device={device}")
-    logger.info(f"Optimizer: {optimizer}")
+    logger.info(f"Optimizer: {ssa_optimizer}")
     logger.info(f"Loss function: {criterion}")
 
     train_losses = []
@@ -54,24 +57,26 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         # Log epoch start
         logger.info(f"\nStarting Epoch [{epoch + 1}/{num_epochs}]")
 
-        for batch_idx, (batch_X, batch_y) in enumerate(train_loader):
-            batch_X, batch_y = batch_X.to(device), batch_y.to(device)
+        for batch_idx, (inputs, targets) in enumerate(train_loader):
+            inputs, targets = inputs.to(device), targets.to(device)
 
             if device == 'cuda':
                 logger.info(f"CUDA Memory: {torch.cuda.memory_allocated() / 1024 ** 2:.2f}MB allocated")
 
-            optimizer.zero_grad()
-            outputs = model(batch_X)
-            scaled_loss = criterion(outputs, batch_y.unsqueeze(1))
-            scaled_loss.backward()
-            optimizer.step()
+            # SSA optimization step
+            ssa_optimizer.zero_grad()
+            ssa_optimizer.step(criterion, inputs, targets, epoch, num_epochs)
+
+            # Get model outputs with updated parameters
+            outputs = model(inputs)
+            scaled_loss = criterion(outputs, targets.unsqueeze(1))
 
             with torch.no_grad():
                 total_train_loss_scaled += scaled_loss.item()
 
                 # Price scale loss calculation
                 scaled_pred = outputs.cpu().numpy()
-                scaled_target = batch_y.cpu().numpy()
+                scaled_target = targets.cpu().numpy()
 
                 pred_features = np.zeros((scaled_pred.shape[0], feature_count))
                 pred_features[:, close_idx] = scaled_pred.flatten()
@@ -102,17 +107,17 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         num_val_batches = 0
 
         with torch.no_grad():
-            for batch_X, batch_y in val_loader:
-                batch_X, batch_y = batch_X.to(device), batch_y.to(device)
-                outputs = model(batch_X)
+            for inputs, targets in val_loader:
+                inputs, targets = inputs.to(device), targets.to(device)
+                outputs = model(inputs)
 
                 # Normalized loss
-                scaled_loss = criterion(outputs, batch_y.unsqueeze(1))
+                scaled_loss = criterion(outputs, targets.unsqueeze(1))
                 total_val_loss_scaled += scaled_loss.item()
 
                 # Price scale loss
                 scaled_pred = outputs.cpu().numpy()
-                scaled_target = batch_y.cpu().numpy()
+                scaled_target = targets.cpu().numpy()
 
                 pred_features = np.zeros((scaled_pred.shape[0], feature_count))
                 pred_features[:, close_idx] = scaled_pred.flatten()
@@ -387,7 +392,7 @@ def evaluate_and_visualize(model, test_loader, device, processed_data, feature_c
     return metrics
 
 
-def save_model_specifications(config_dict, model, criterion, optimizer, results_dir):
+def save_model_specifications(config_dict, model, criterion, ssa_optimizer, results_dir):
     specs = {
         'Model Architecture': {
             'Type': 'LSTM',
@@ -402,8 +407,7 @@ def save_model_specifications(config_dict, model, criterion, optimizer, results_
             'Learning Rate': config_dict['learning_rate'],
             'Device': config_dict['device'],
             'Loss Function': criterion.__class__.__name__,
-            'Optimizer': optimizer.__class__.__name__,
-            'Weight Decay': optimizer.param_groups[0]['weight_decay']
+            'Optimizer': ssa_optimizer.__class__.__name__,
         },
         'Data Configuration': {
             'Sequence Length': config_dict['sequence_length'],
@@ -503,16 +507,12 @@ def main():
     logger.info(f"Model input size: {input_size}")
 
     criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(
-        model.parameters(),
-        lr=learning_rate,
-        weight_decay=1e-5
-    )
+    ssa_optimizer = SSAOptimizer(model, pop_size=30)
 
     # Training
     logger.info("Starting training process...")
     train_losses, val_losses = train_model(
-        model, train_loader, val_loader, criterion, optimizer,
+        model, train_loader, val_loader, criterion, ssa_optimizer,
         num_epochs, device, processed_data['scaler'], logger, close_idx, feature_count
     )
 
@@ -523,7 +523,7 @@ def main():
     save_path = results_dir / 'lstm_model.pth'
     torch.save({
         'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
+        #'optimizer_state_dict': ssa_optimizer.state_dict(),
         'train_losses': train_losses,
         'val_losses': val_losses,
         'metadata': metadata
@@ -557,7 +557,7 @@ def main():
         'close_idx': close_idx
     }
 
-    save_model_specifications(config_dict, model, criterion, optimizer, results_dir)
+    save_model_specifications(config_dict, model, criterion, ssa_optimizer, results_dir)
 
 if __name__ == "__main__":
     main()

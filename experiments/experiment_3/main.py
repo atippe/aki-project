@@ -144,7 +144,6 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         logger.info(f'  Price Scale - Train MSE: {avg_train_loss:.2f}, RMSE: ${np.sqrt(avg_train_loss):.2f}')
         logger.info(f'  Price Scale - Val MSE: {avg_val_loss:.2f}, RMSE: ${np.sqrt(avg_val_loss):.2f}')
 
-    logger.info("Training completed")
     return train_losses, val_losses
 
 
