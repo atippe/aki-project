@@ -118,3 +118,31 @@ Training batches: 132
 Validation batches: 27
 
 Starting Epoch [1/5]
+
+First batch details:
+Scaled predictions (first 3):
+[[-0.00505049]
+ [-0.00519534]
+ [-0.00765066]]
+Scaled targets (first 3):
+[0.3726683  0.31934604 0.0395587 ]
+Price predictions (first 3):
+[15493.70902262 15489.0257007  15409.64102429]
+Price targets (first 3):
+[27705.99954897 25982.00037722 16936.00006014]
+Initial normalized MSE: 0.215524
+Initial price-scale MSE: 225296123.22
+Epoch [1/5] Summary:
+  Normalized - Train MSE: 0.655855, RMSE: 0.809849
+  Normalized - Val MSE: 0.619592, RMSE: 0.787142
+  Price Scale - Train MSE: 685590384.25, RMSE: $26183.78
+  Price Scale - Val MSE: 647683364.09, RMSE: $25449.62
+
+Starting Epoch [2/5]
+Epoch [2/5] Summary:
+  Normalized - Train MSE: 0.083156, RMSE: 0.288367
+  Normalized - Val MSE: 0.619592, RMSE: 0.787142
+  Price Scale - Train MSE: 86925780.62, RMSE: $9323.40
+  Price Scale - Val MSE: 647683364.09, RMSE: $25449.62
+
+Starting Epoch [3/5]
