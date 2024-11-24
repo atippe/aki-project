@@ -146,3 +146,277 @@ Epoch [2/5] Summary:
   Price Scale - Val MSE: 647683364.09, RMSE: $25449.62
 
 Starting Epoch [3/5]
+Epoch [3/5] Summary:
+  Normalized - Train MSE: 0.083156, RMSE: 0.288367
+  Normalized - Val MSE: 0.619592, RMSE: 0.787142
+  Price Scale - Train MSE: 86925780.62, RMSE: $9323.40
+  Price Scale - Val MSE: 647683364.09, RMSE: $25449.62
+
+Starting Epoch [4/5]
+Epoch [4/5] Summary:
+  Normalized - Train MSE: 0.083156, RMSE: 0.288367
+  Normalized - Val MSE: 0.619592, RMSE: 0.787142
+  Price Scale - Train MSE: 86925780.62, RMSE: $9323.40
+  Price Scale - Val MSE: 647683364.09, RMSE: $25449.62
+
+Starting Epoch [5/5]
+Epoch [5/5] Summary:
+  Normalized - Train MSE: 0.083156, RMSE: 0.288367
+  Normalized - Val MSE: 0.619592, RMSE: 0.787142
+  Price Scale - Train MSE: 86925780.62, RMSE: $9323.40
+  Price Scale - Val MSE: 647683364.09, RMSE: $25449.62
+Training completed
+Training completed in 1974.12 seconds
+
+Final model parameters and changes:
+
+lstm.U_f:
+Initial stats:
+  Mean: -0.005099
+  Std: 0.056733
+  Min: -0.098473
+  Max: 0.099986
+Final stats:
+  Mean: 0.240924
+  Std: 0.773416
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.246023
+  Std change: 0.716684
+  Min change: -0.901527
+  Max change: 0.900014
+
+lstm.V_f:
+Initial stats:
+  Mean: -0.000981
+  Std: 0.058032
+  Min: -0.099979
+  Max: 0.099991
+Final stats:
+  Mean: 0.168557
+  Std: 0.770925
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.169538
+  Std change: 0.712893
+  Min change: -0.900021
+  Max change: 0.900009
+
+lstm.b_f:
+Initial stats:
+  Mean: -0.008113
+  Std: 0.056159
+  Min: -0.095230
+  Max: 0.098144
+Final stats:
+  Mean: 0.197169
+  Std: 0.785675
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.205283
+  Std change: 0.729517
+  Min change: -0.904770
+  Max change: 0.901856
+
+lstm.U_i:
+Initial stats:
+  Mean: -0.000225
+  Std: 0.057595
+  Min: -0.099692
+  Max: 0.098034
+Final stats:
+  Mean: 0.182936
+  Std: 0.769169
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.183161
+  Std change: 0.711574
+  Min change: -0.900308
+  Max change: 0.901966
+
+lstm.V_i:
+Initial stats:
+  Mean: -0.000171
+  Std: 0.057538
+  Min: -0.099956
+  Max: 0.099935
+Final stats:
+  Mean: 0.176186
+  Std: 0.777319
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.176358
+  Std change: 0.719781
+  Min change: -0.900044
+  Max change: 0.900065
+
+lstm.b_i:
+Initial stats:
+  Mean: 0.003805
+  Std: 0.059688
+  Min: -0.099849
+  Max: 0.099733
+Final stats:
+  Mean: 0.164761
+  Std: 0.776326
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.160955
+  Std change: 0.716639
+  Min change: -0.900151
+  Max change: 0.900267
+
+lstm.U_o:
+Initial stats:
+  Mean: 0.000730
+  Std: 0.058199
+  Min: -0.099761
+  Max: 0.099207
+Final stats:
+  Mean: 0.176735
+  Std: 0.793821
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.176004
+  Std change: 0.735622
+  Min change: -0.900239
+  Max change: 0.900793
+
+lstm.V_o:
+Initial stats:
+  Mean: 0.000603
+  Std: 0.058206
+  Min: -0.099984
+  Max: 0.099964
+Final stats:
+  Mean: 0.169653
+  Std: 0.777800
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.169050
+  Std change: 0.719594
+  Min change: -0.900016
+  Max change: 0.900036
+
+lstm.b_o:
+Initial stats:
+  Mean: -0.001501
+  Std: 0.054843
+  Min: -0.097761
+  Max: 0.097137
+Final stats:
+  Mean: 0.214289
+  Std: 0.768970
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.215790
+  Std change: 0.714128
+  Min change: -0.902239
+  Max change: 0.902863
+
+lstm.U_g:
+Initial stats:
+  Mean: 0.000302
+  Std: 0.055990
+  Min: -0.099615
+  Max: 0.099602
+Final stats:
+  Mean: 0.198403
+  Std: 0.777713
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.198101
+  Std change: 0.721724
+  Min change: -0.900385
+  Max change: 0.900398
+
+lstm.V_g:
+Initial stats:
+  Mean: -0.000421
+  Std: 0.057935
+  Min: -0.099960
+  Max: 0.099957
+Final stats:
+  Mean: 0.160666
+  Std: 0.776154
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.161087
+  Std change: 0.718219
+  Min change: -0.900040
+  Max change: 0.900043
+
+lstm.b_g:
+Initial stats:
+  Mean: 0.005511
+  Std: 0.060052
+  Min: -0.098373
+  Max: 0.098937
+Final stats:
+  Mean: 0.069148
+  Std: 0.820301
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.063637
+  Std change: 0.760248
+  Min change: -0.901627
+  Max change: 0.901063
+
+linear.weight:
+Initial stats:
+  Mean: -0.005034
+  Std: 0.055355
+  Min: -0.095610
+  Max: 0.096909
+Final stats:
+  Mean: -0.008249
+  Std: 0.803861
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: -0.003215
+  Std change: 0.748506
+  Min change: -0.904390
+  Max change: 0.903091
+
+linear.bias:
+Initial stats:
+  Mean: -0.028317
+  Std: nan
+  Min: -0.028317
+  Max: -0.028317
+Final stats:
+  Mean: 1.000000
+  Std: nan
+  Min: 1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 1.028317
+  Std change: nan
+  Min change: 1.028317
+  Max change: 1.028317
+Saving model and results...
+Starting evaluation process...
+Generating predictions...
+Creating visualizations...
+Training history plot saved
+Prediction analysis plots saved
+Metrics and sample predictions tables saved
+Error distribution and time series plots saved
+Evaluation metrics (for test set):
+  Mean Squared Error: 884318651.53
+  Root Mean Squared Error: 29737.50
+  Mean Absolute Error: 29416.56
+  R² Score: -24.46
