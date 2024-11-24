@@ -404,7 +404,7 @@ def save_model_specifications(config_dict, model, criterion, ssa_optimizer, resu
         'Training Parameters': {
             'Epochs': config_dict['num_epochs'],
             'Batch Size': config_dict['batch_size'],
-            'Learning Rate': config_dict['learning_rate'],
+            #'Learning Rate': config_dict['learning_rate'],
             'Device': config_dict['device'],
             'Loss Function': criterion.__class__.__name__,
             'Optimizer': ssa_optimizer.__class__.__name__,
@@ -459,6 +459,11 @@ def main():
     logger.info(f"  Batch size: {batch_size}")
     #logger.info(f"  Learning rate: {learning_rate}")
     logger.info(f"  Device: {device}")
+
+    logger.info(f"SSA Parameters:")
+    logger.info(f"  Population size: {pop_size}")
+    logger.info(f"  a: {a}")
+    logger.info(f"  ST: {ST}")
 
     # Load data
     logger.info("Loading pre-processed data...")

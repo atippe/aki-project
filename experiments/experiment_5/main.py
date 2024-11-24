@@ -404,7 +404,7 @@ def save_model_specifications(config_dict, model, criterion, ssa_optimizer, resu
         'Training Parameters': {
             'Epochs': config_dict['num_epochs'],
             'Batch Size': config_dict['batch_size'],
-            'Learning Rate': config_dict['learning_rate'],
+            #'Learning Rate': config_dict['learning_rate'],
             'Device': config_dict['device'],
             'Loss Function': criterion.__class__.__name__,
             'Optimizer': ssa_optimizer.__class__.__name__,
@@ -437,9 +437,11 @@ def main():
     device = 'cpu'
 
     # SSA Parameters
-    pop_size = 30        # Number of sparrows
-    a = 0.5             # Control parameter
-    ST = 0.8            # Safety threshold
+    pop_size = 100        # Number of sparrows
+    a = 0.9             # Control parameter
+    ST = 0.5            # Safety threshold
+    diversity_weight = 0.3 # Controls population diversity
+    momentum = 0.2 # Controls the influence of previous updates
 
 
     # Setup directories and logging
@@ -459,6 +461,13 @@ def main():
     logger.info(f"  Batch size: {batch_size}")
     #logger.info(f"  Learning rate: {learning_rate}")
     logger.info(f"  Device: {device}")
+
+    logger.info(f"SSA Parameters:")
+    logger.info(f"  Population size: {pop_size}")
+    logger.info(f"  a: {a}")
+    logger.info(f"  ST: {ST}")
+    logger.info(f"  Diversity weight: {diversity_weight}")
+    logger.info(f"  Momentum: {momentum}")
 
     # Load data
     logger.info("Loading pre-processed data...")
@@ -513,7 +522,7 @@ def main():
     logger.info(f"Model input size: {input_size}")
 
     criterion = nn.MSELoss()
-    ssa_optimizer = SSAOptimizer(model, pop_size=pop_size, a=a, ST=ST, logger=logger)
+    ssa_optimizer = SSAOptimizer(model, pop_size=pop_size, a=a, ST=ST, diversity_weight=diversity_weight, momentum=momentum, logger=logger)
 
     # Training
     logger.info("Starting training process...")

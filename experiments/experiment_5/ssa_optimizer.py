@@ -2,16 +2,21 @@ import torch
 
 
 class SSAOptimizer:
-    def __init__(self, model, pop_size=30, a=0.5, ST=0.8, logger=None):
+    def __init__(self, model, pop_size=50, a=0.8, ST=0.6, diversity_weight=0.1, momentum=0.1, logger=None):
         self.model = model
         self.pop_size = pop_size
         self.a = a
         self.ST = ST
+        self.diversity_weight = diversity_weight
+        self.momentum = momentum
         self.best_position = None
         self.best_fitness = float('inf')
         self.worst_fitness = float('-inf')
         self.current_position = None
         self.logger = logger
+
+        # Previous velocity for momentum
+        self.velocities = []
 
         # Save initial parameters
         self.initial_params = {}
@@ -29,46 +34,63 @@ class SSAOptimizer:
                 self.logger.info(f"  Min: {param.min().item():.6f}")
                 self.logger.info(f"  Max: {param.max().item():.6f}")
 
-        # Initialize population
+        # Initialize population and velocities
         self.positions = []
         for _ in range(pop_size):
             position = {}
+            velocity = {}
             for name, param in model.named_parameters():
                 position[name] = param.data.clone()
+                velocity[name] = torch.zeros_like(param.data)
             self.positions.append(position)
+            self.velocities.append(velocity)
 
-        # Store initial position as current best
-        self.current_position = {
-            name: param.data.clone()
-            for name, param in model.named_parameters()
-        }
-
-    def update_detector(self, position, iter_num, itermax):
+    def update_detector(self, position, velocity, iter_num, itermax):
         R2 = torch.rand(1).item()
         new_position = {}
+        new_velocity = {}
 
         for name, param in position.items():
             if R2 < self.ST:
-                new_position[name] = param * torch.exp(-torch.tensor(iter_num / (self.a * itermax)))
+                # Update with momentum and diversity
+                new_velocity[name] = self.momentum * velocity[name] + \
+                                     (1 - self.momentum) * torch.exp(-torch.tensor(iter_num / (self.a * itermax))) * \
+                                     (1 + self.diversity_weight * torch.randn_like(param))
             else:
                 Q = torch.randn_like(param)
                 L = torch.ones_like(param)
-                new_position[name] = param + Q * L
+                new_velocity[name] = self.momentum * velocity[name] + \
+                                     (1 - self.momentum) * (Q * L + self.diversity_weight * torch.randn_like(param))
 
-        return new_position
+            new_position[name] = param + new_velocity[name]
+            # Apply bounds
+            new_position[name].clamp_(-1, 1)
 
-    def update_follower(self, position, i, best_position, worst_position):
+        return new_position, new_velocity
+
+    def update_follower(self, position, velocity, i, best_position, worst_position):
         new_position = {}
+        new_velocity = {}
 
         for name, param in position.items():
             if i > self.pop_size / 2:
                 Q = torch.randn_like(param)
-                new_position[name] = Q * torch.exp((worst_position[name] - param) / (i ** 2))
+                new_velocity[name] = self.momentum * velocity[name] + \
+                                     (1 - self.momentum) * Q * torch.exp((worst_position[name] - param) / (i ** 2))
             else:
                 A = torch.randint(0, 2, param.shape) * 2 - 1
-                new_position[name] = best_position[name] + torch.abs(param - best_position[name]) * A
+                new_velocity[name] = self.momentum * velocity[name] + \
+                                     (1 - self.momentum) * (torch.abs(param - best_position[name]) * A)
 
-        return new_position
+            new_position[name] = param + new_velocity[name]
+            # Apply bounds
+            new_position[name].clamp_(-1, 1)
+
+            # Add diversity
+            new_position[name] += self.diversity_weight * torch.randn_like(param)
+            new_position[name].clamp_(-1, 1)
+
+        return new_position, new_velocity
 
     def step(self, criterion, inputs, targets, iter_num, itermax):
         # Initialize worst position and fitness
@@ -81,9 +103,18 @@ class SSAOptimizer:
             for name, param in self.model.named_parameters():
                 param.data.copy_(position[name])
 
-            # Calculate fitness (loss)
+            # Calculate fitness (loss) with diversity penalty
             outputs = self.model(inputs)
-            fitness = criterion(outputs, targets.unsqueeze(1)).item()
+            base_fitness = criterion(outputs, targets.unsqueeze(1)).item()
+
+            # Add diversity penalty
+            diversity_penalty = 0
+            for other_position in self.positions:
+                for name, param in position.items():
+                    diversity_penalty += torch.mean((param - other_position[name]) ** 2)
+            diversity_penalty /= len(self.positions)
+
+            fitness = base_fitness - self.diversity_weight * diversity_penalty
 
             # Update best and worst positions
             if self.best_position is None or fitness < self.best_fitness:
@@ -100,16 +131,23 @@ class SSAOptimizer:
 
         # Update positions using SSA
         new_positions = []
+        new_velocities = []
         n_monitors = int(0.2 * self.pop_size)
 
         for i in range(self.pop_size):
             if i < n_monitors:
-                new_position = self.update_detector(self.positions[i], iter_num, itermax)
+                new_position, new_velocity = self.update_detector(
+                    self.positions[i], self.velocities[i], iter_num, itermax
+                )
             else:
-                new_position = self.update_follower(self.positions[i], i, self.best_position, worst_position)
+                new_position, new_velocity = self.update_follower(
+                    self.positions[i], self.velocities[i], i, self.best_position, worst_position
+                )
             new_positions.append(new_position)
+            new_velocities.append(new_velocity)
 
         self.positions = new_positions
+        self.velocities = new_velocities
 
         # Apply best position to model
         for name, param in self.model.named_parameters():
@@ -154,5 +192,10 @@ class SSAOptimizer:
                 self.logger.info(f"  Max change: {max_change:.6f}")
 
     def __str__(self):
-        return f"SSAOptimizer(pop_size={self.pop_size}, a={self.a}, ST={self.ST})"
+        return (f"SSAOptimizer(pop_size={self.pop_size}, "
+                f"a={self.a}, "
+                f"ST={self.ST}, "
+                f"diversity_weight={self.diversity_weight}, "
+                f"momentum={self.momentum})")
+
 

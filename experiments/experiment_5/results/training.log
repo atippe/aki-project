@@ -1,0 +1,120 @@
+=== Starting new training run ===
+Parameters:
+  Hidden size: 100
+  Epochs: 5
+  Batch size: 32
+  Device: cpu
+SSA Parameters:
+  Population size: 100
+  a: 0.9
+  ST: 0.5
+  Diversity weight: 0.3
+  Momentum: 0.2
+Loading pre-processed data...
+Sequence length: 60
+Feature count: 5
+Close price index: 3
+Training set shape: torch.Size([4224, 60, 5])
+Validation set shape: torch.Size([858, 60, 5])
+Test set shape: torch.Size([858, 60, 5])
+Model input size: 5
+
+Initial model parameters:
+lstm.U_f:
+  Shape: torch.Size([5, 100])
+  Mean: -0.005099
+  Std: 0.056733
+  Min: -0.098473
+  Max: 0.099986
+lstm.V_f:
+  Shape: torch.Size([100, 100])
+  Mean: -0.000981
+  Std: 0.058032
+  Min: -0.099979
+  Max: 0.099991
+lstm.b_f:
+  Shape: torch.Size([100])
+  Mean: -0.008113
+  Std: 0.056159
+  Min: -0.095230
+  Max: 0.098144
+lstm.U_i:
+  Shape: torch.Size([5, 100])
+  Mean: -0.000225
+  Std: 0.057595
+  Min: -0.099692
+  Max: 0.098034
+lstm.V_i:
+  Shape: torch.Size([100, 100])
+  Mean: -0.000171
+  Std: 0.057538
+  Min: -0.099956
+  Max: 0.099935
+lstm.b_i:
+  Shape: torch.Size([100])
+  Mean: 0.003805
+  Std: 0.059688
+  Min: -0.099849
+  Max: 0.099733
+lstm.U_o:
+  Shape: torch.Size([5, 100])
+  Mean: 0.000730
+  Std: 0.058199
+  Min: -0.099761
+  Max: 0.099207
+lstm.V_o:
+  Shape: torch.Size([100, 100])
+  Mean: 0.000603
+  Std: 0.058206
+  Min: -0.099984
+  Max: 0.099964
+lstm.b_o:
+  Shape: torch.Size([100])
+  Mean: -0.001501
+  Std: 0.054843
+  Min: -0.097761
+  Max: 0.097137
+lstm.U_g:
+  Shape: torch.Size([5, 100])
+  Mean: 0.000302
+  Std: 0.055990
+  Min: -0.099615
+  Max: 0.099602
+lstm.V_g:
+  Shape: torch.Size([100, 100])
+  Mean: -0.000421
+  Std: 0.057935
+  Min: -0.099960
+  Max: 0.099957
+lstm.b_g:
+  Shape: torch.Size([100])
+  Mean: 0.005511
+  Std: 0.060052
+  Min: -0.098373
+  Max: 0.098937
+linear.weight:
+  Shape: torch.Size([1, 100])
+  Mean: -0.005034
+  Std: 0.055355
+  Min: -0.095610
+  Max: 0.096909
+linear.bias:
+  Shape: torch.Size([1])
+  Mean: -0.028317
+  Std: nan
+  Min: -0.028317
+  Max: -0.028317
+Starting training process...
+Starting training process
+Model architecture:
+PricePredictionModel(
+  (lstm): CustomLSTM()
+  (linear): Linear(in_features=100, out_features=1, bias=True)
+)
+Training parameters: epochs=5, device=cpu
+Optimizer: SSAOptimizer(pop_size=100, a=0.9, ST=0.5, diversity_weight=0.3, momentum=0.2)
+Loss function: MSELoss()
+Training batches: 132
+Validation batches: 27
+
+Starting Epoch [1/5]
