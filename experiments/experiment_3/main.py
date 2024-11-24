@@ -194,7 +194,7 @@ def plot_prediction_analysis(y_test, y_pred):
     plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
     plt.xlabel('Actual Price ($)')
     plt.ylabel('Predicted Price ($)')
-    plt.title('Price: Actual vs Predicted')
+    plt.title('Price: Actual vs Predicted (Test Set)')
 
     plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
     plt.gca().yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
@@ -209,7 +209,7 @@ def plot_prediction_analysis(y_test, y_pred):
     plt.xlabel('Predicted Price ($)')
     plt.ylabel('Residuals ($)')
     plt.axhline(y=0, color='r', linestyle='--')
-    plt.title('Residuals Analysis')
+    plt.title('Residuals Analysis (Test Set)')
 
     plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
     plt.gca().yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
@@ -283,7 +283,7 @@ def save_metrics_and_samples(y_test, y_pred, metrics, processed_data):
         'Metric': list(metrics.keys()),
         'Value': [f"{v:,.2f}" for v in metrics.values()]
     })
-    fig1 = create_styled_table(metrics_df, 'Model Performance Metrics')
+    fig1 = create_styled_table(metrics_df, 'Model Performance Metrics (Test Set)', figsize=(6, 3))
 
     # Sample predictions table
     sample_size = 10
@@ -317,7 +317,7 @@ def plot_error_distribution(residuals):
     plt.hist(residuals, bins=50, edgecolor='black')
     plt.xlabel('Prediction Error')
     plt.ylabel('Frequency')
-    plt.title('Distribution of Prediction Errors')
+    plt.title('Distribution of Prediction Errors (Test Set)')
     plt.tight_layout()
 
     return fig
@@ -334,7 +334,7 @@ def plot_time_series(y_test, y_pred, processed_data):
     fig = plt.figure(figsize=(15, 6))
     plt.plot(test_dates, y_test.values, label='Actual Price', color='blue', alpha=0.7)
     plt.plot(test_dates, y_pred, label='Predicted Price', color='red', alpha=0.7)
-    plt.title('Price: Actual vs Predicted')
+    plt.title('Price: Actual vs Predicted (Test Set)')
     plt.xlabel('Date')
     plt.ylabel('Price ($)')
     plt.legend()
@@ -387,11 +387,47 @@ def evaluate_and_visualize(model, test_loader, device, processed_data, feature_c
     return metrics
 
 
+def save_model_specifications(config_dict, model, criterion, optimizer, results_dir):
+    specs = {
+        'Model Architecture': {
+            'Type': 'LSTM',
+            'Hidden Size': config_dict['hidden_size'],
+            'Input Size': config_dict['input_size'],
+            'Output Size': 1,
+            'Model Class': model.__class__.__name__
+        },
+        'Training Parameters': {
+            'Epochs': config_dict['num_epochs'],
+            'Batch Size': config_dict['batch_size'],
+            'Learning Rate': config_dict['learning_rate'],
+            'Device': config_dict['device'],
+            'Loss Function': criterion.__class__.__name__,
+            'Optimizer': optimizer.__class__.__name__,
+            'Weight Decay': optimizer.param_groups[0]['weight_decay']
+        },
+        'Data Configuration': {
+            'Sequence Length': config_dict['sequence_length'],
+            'Feature Count': config_dict['feature_count'],
+            'Training Samples': config_dict['train_shape'],
+            'Validation Samples': config_dict['val_shape'],
+            'Test Samples': config_dict['test_shape'],
+            'Close Price Index': config_dict['close_idx']
+        }
+    }
+
+    # Save as text file
+    with open(results_dir / 'model_specifications.txt', 'w') as f:
+        f.write("=== Model Specifications ===\n\n")
+        for category, params in specs.items():
+            f.write(f"{category}:\n")
+            for param, value in params.items():
+                f.write(f"  {param}: {value}\n")
+            f.write("\n")
 
 def main():
     # Parameters
     hidden_size = 100
-    num_epochs = 5
+    num_epochs = 50
     batch_size = 32
     learning_rate = 0.0005
     device = 'cpu'
@@ -480,6 +516,8 @@ def main():
         num_epochs, device, processed_data['scaler'], logger, close_idx, feature_count
     )
 
+    logger.info(f"Training completed in {time.time() - start_time:.2f} seconds")
+
     # Save results
     logger.info("Saving model and results...")
     save_path = results_dir / 'lstm_model.pth'
@@ -499,12 +537,27 @@ def main():
     )
 
     # Log metrics
-    logger.info("Evaluation metrics:")
+    logger.info("Evaluation metrics (for test set):")
     for k, v in metrics.items():
         logger.info(f"  {k}: {v:.2f}")
 
-    logger.info(f"Training completed in {time.time() - start_time:.2f} seconds")
+    # Save model specifications
+    config_dict = {
+        'hidden_size': hidden_size,
+        'input_size': input_size,
+        'num_epochs': num_epochs,
+        'batch_size': batch_size,
+        'learning_rate': learning_rate,
+        'device': device,
+        'sequence_length': sequence_length,
+        'feature_count': feature_count,
+        'train_shape': processed_data['X_train'].shape,
+        'val_shape': processed_data['X_val'].shape,
+        'test_shape': processed_data['X_test'].shape,
+        'close_idx': close_idx
+    }
 
+    save_model_specifications(config_dict, model, criterion, optimizer, results_dir)
 
 if __name__ == "__main__":
     main()
