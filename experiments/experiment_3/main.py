@@ -389,10 +389,10 @@ def evaluate_and_visualize(model, test_loader, device, processed_data, feature_c
 def save_model_specifications(config_dict, model, criterion, optimizer, results_dir):
     specs = {
         'Model Architecture': {
-            'Type': 'LSTM',
+            'Type': config_dict['model_type'],
             'Hidden Size': config_dict['hidden_size'],
             'Input Size': config_dict['input_size'],
-            'Output Size': 1,
+            'Output Size': model.linear.out_features,
             'Model Class': model.__class__.__name__
         },
         'Training Parameters': {
@@ -542,6 +542,7 @@ def main():
 
     # Save model specifications
     config_dict = {
+        'model_type': 'LSTM',
         'hidden_size': hidden_size,
         'input_size': input_size,
         'num_epochs': num_epochs,

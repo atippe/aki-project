@@ -42,367 +42,366 @@ Starting Epoch [1/50]
 
 First batch details:
 Scaled predictions (first 3):
-[[0.09014362]
- [0.09894101]
- [0.09200883]]
+[[0.08467007]
+ [0.07782124]
+ [0.07110832]]
 Scaled targets (first 3):
-[0.3465639  0.02310426 0.30830422]
+[0.36082235 0.18789609 0.01998039]
 Price predictions (first 3):
-[18571.49651005 18855.93115703 18631.80186036]
+[18394.52719984 18173.09297978 17956.05283306]
 Price targets (first 3):
-[26862.00022273 16403.99999477 25624.99956394]
-Initial normalized MSE: 0.098890
-Initial price-scale MSE: 103373506.97
+[27322.9999666  21731.99994081 16303.00002346]
+Initial normalized MSE: 0.108697
+Initial price-scale MSE: 113625540.77
 Epoch [1/50] Summary:
-  Normalized - Train MSE: 0.015205, RMSE: 0.123309
-  Normalized - Val MSE: 0.007947, RMSE: 0.089144
-  Price Scale - Train MSE: 15894529.88, RMSE: $3986.79
-  Price Scale - Val MSE: 8306912.60, RMSE: $2882.17
+  Normalized - Train MSE: 0.016362, RMSE: 0.127913
+  Normalized - Val MSE: 0.002967, RMSE: 0.054467
+  Price Scale - Train MSE: 17103431.54, RMSE: $4135.63
+  Price Scale - Val MSE: 3101173.70, RMSE: $1761.01
 
 Starting Epoch [2/50]
 Epoch [2/50] Summary:
-  Normalized - Train MSE: 0.000477, RMSE: 0.021833
-  Normalized - Val MSE: 0.024116, RMSE: 0.155292
-  Price Scale - Train MSE: 498279.82, RMSE: $705.89
-  Price Scale - Val MSE: 25209072.28, RMSE: $5020.86
+  Normalized - Train MSE: 0.000471, RMSE: 0.021708
+  Normalized - Val MSE: 0.009882, RMSE: 0.099406
+  Price Scale - Train MSE: 492620.93, RMSE: $701.87
+  Price Scale - Val MSE: 10329588.73, RMSE: $3213.97
 
 Starting Epoch [3/50]
 Epoch [3/50] Summary:
-  Normalized - Train MSE: 0.000408, RMSE: 0.020208
-  Normalized - Val MSE: 0.019988, RMSE: 0.141379
-  Price Scale - Train MSE: 426856.86, RMSE: $653.34
-  Price Scale - Val MSE: 20894139.56, RMSE: $4571.01
+  Normalized - Train MSE: 0.000391, RMSE: 0.019766
+  Normalized - Val MSE: 0.010018, RMSE: 0.100090
+  Price Scale - Train MSE: 408427.45, RMSE: $639.08
+  Price Scale - Val MSE: 10472301.99, RMSE: $3236.09
 
 Starting Epoch [4/50]
 Epoch [4/50] Summary:
-  Normalized - Train MSE: 0.000397, RMSE: 0.019929
-  Normalized - Val MSE: 0.011942, RMSE: 0.109278
-  Price Scale - Train MSE: 415176.24, RMSE: $644.34
-  Price Scale - Val MSE: 12482995.99, RMSE: $3533.13
+  Normalized - Train MSE: 0.000392, RMSE: 0.019804
+  Normalized - Val MSE: 0.005796, RMSE: 0.076131
+  Price Scale - Train MSE: 410000.01, RMSE: $640.31
+  Price Scale - Val MSE: 6058685.21, RMSE: $2461.44
 
 Starting Epoch [5/50]
 Epoch [5/50] Summary:
-  Normalized - Train MSE: 0.000371, RMSE: 0.019257
-  Normalized - Val MSE: 0.017196, RMSE: 0.131134
-  Price Scale - Train MSE: 387627.22, RMSE: $622.60
-  Price Scale - Val MSE: 17975883.95, RMSE: $4239.80
+  Normalized - Train MSE: 0.000377, RMSE: 0.019419
+  Normalized - Val MSE: 0.005486, RMSE: 0.074067
+  Price Scale - Train MSE: 394201.86, RMSE: $627.85
+  Price Scale - Val MSE: 5734601.57, RMSE: $2394.70
 
 Starting Epoch [6/50]
 Epoch [6/50] Summary:
-  Normalized - Train MSE: 0.000354, RMSE: 0.018812
-  Normalized - Val MSE: 0.012501, RMSE: 0.111808
-  Price Scale - Train MSE: 369920.39, RMSE: $608.21
-  Price Scale - Val MSE: 13067837.58, RMSE: $3614.95
+  Normalized - Train MSE: 0.000342, RMSE: 0.018498
+  Normalized - Val MSE: 0.007710, RMSE: 0.087808
+  Price Scale - Train MSE: 357703.72, RMSE: $598.08
+  Price Scale - Val MSE: 8059747.47, RMSE: $2838.97
 
 Starting Epoch [7/50]
 Epoch [7/50] Summary:
-  Normalized - Train MSE: 0.000335, RMSE: 0.018304
-  Normalized - Val MSE: 0.009515, RMSE: 0.097545
-  Price Scale - Train MSE: 350243.25, RMSE: $591.81
-  Price Scale - Val MSE: 9946329.42, RMSE: $3153.78
+  Normalized - Train MSE: 0.000332, RMSE: 0.018230
+  Normalized - Val MSE: 0.003933, RMSE: 0.062712
+  Price Scale - Train MSE: 347401.58, RMSE: $589.41
+  Price Scale - Val MSE: 4111101.67, RMSE: $2027.59
 
 Starting Epoch [8/50]
 Epoch [8/50] Summary:
-  Normalized - Train MSE: 0.000318, RMSE: 0.017823
-  Normalized - Val MSE: 0.011053, RMSE: 0.105135
-  Price Scale - Train MSE: 332050.12, RMSE: $576.24
-  Price Scale - Val MSE: 11554475.13, RMSE: $3399.19
+  Normalized - Train MSE: 0.000317, RMSE: 0.017815
+  Normalized - Val MSE: 0.005519, RMSE: 0.074292
+  Price Scale - Train MSE: 331758.51, RMSE: $575.98
+  Price Scale - Val MSE: 5769520.49, RMSE: $2401.98
 
 Starting Epoch [9/50]
 Epoch [9/50] Summary:
-  Normalized - Train MSE: 0.000306, RMSE: 0.017493
-  Normalized - Val MSE: 0.008523, RMSE: 0.092321
-  Price Scale - Train MSE: 319881.60, RMSE: $565.58
-  Price Scale - Val MSE: 8909658.39, RMSE: $2984.91
+  Normalized - Train MSE: 0.000322, RMSE: 0.017952
+  Normalized - Val MSE: 0.005165, RMSE: 0.071867
+  Price Scale - Train MSE: 336868.80, RMSE: $580.40
+  Price Scale - Val MSE: 5398968.46, RMSE: $2323.57
 
 Starting Epoch [10/50]
 Epoch [10/50] Summary:
-  Normalized - Train MSE: 0.000298, RMSE: 0.017275
-  Normalized - Val MSE: 0.007927, RMSE: 0.089036
-  Price Scale - Train MSE: 311962.80, RMSE: $558.54
-  Price Scale - Val MSE: 8286871.34, RMSE: $2878.69
+  Normalized - Train MSE: 0.000313, RMSE: 0.017684
+  Normalized - Val MSE: 0.004377, RMSE: 0.066156
+  Price Scale - Train MSE: 326908.14, RMSE: $571.76
+  Price Scale - Val MSE: 4575058.95, RMSE: $2138.94
 
 Starting Epoch [11/50]
 Epoch [11/50] Summary:
-  Normalized - Train MSE: 0.000290, RMSE: 0.017024
-  Normalized - Val MSE: 0.005224, RMSE: 0.072275
-  Price Scale - Train MSE: 302968.68, RMSE: $550.43
-  Price Scale - Val MSE: 5460470.56, RMSE: $2336.76
+  Normalized - Train MSE: 0.000284, RMSE: 0.016858
+  Normalized - Val MSE: 0.003728, RMSE: 0.061057
+  Price Scale - Train MSE: 297070.71, RMSE: $545.04
+  Price Scale - Val MSE: 3897013.82, RMSE: $1974.09
 
 Starting Epoch [12/50]
 Epoch [12/50] Summary:
-  Normalized - Train MSE: 0.000276, RMSE: 0.016612
-  Normalized - Val MSE: 0.006094, RMSE: 0.078061
-  Price Scale - Train MSE: 288469.59, RMSE: $537.09
-  Price Scale - Val MSE: 6369797.65, RMSE: $2523.85
+  Normalized - Train MSE: 0.000288, RMSE: 0.016975
+  Normalized - Val MSE: 0.002735, RMSE: 0.052297
+  Price Scale - Train MSE: 301231.35, RMSE: $548.85
+  Price Scale - Val MSE: 2858939.91, RMSE: $1690.84
 
 Starting Epoch [13/50]
 Epoch [13/50] Summary:
-  Normalized - Train MSE: 0.000267, RMSE: 0.016336
-  Normalized - Val MSE: 0.004114, RMSE: 0.064143
-  Price Scale - Train MSE: 278948.17, RMSE: $528.16
-  Price Scale - Val MSE: 4300905.89, RMSE: $2073.86
+  Normalized - Train MSE: 0.000284, RMSE: 0.016850
+  Normalized - Val MSE: 0.004227, RMSE: 0.065013
+  Price Scale - Train MSE: 296793.11, RMSE: $544.79
+  Price Scale - Val MSE: 4418330.27, RMSE: $2101.98
 
 Starting Epoch [14/50]
 Epoch [14/50] Summary:
-  Normalized - Train MSE: 0.000260, RMSE: 0.016133
-  Normalized - Val MSE: 0.004920, RMSE: 0.070143
-  Price Scale - Train MSE: 272068.55, RMSE: $521.60
-  Price Scale - Val MSE: 5143056.15, RMSE: $2267.83
+  Normalized - Train MSE: 0.000266, RMSE: 0.016302
+  Normalized - Val MSE: 0.002232, RMSE: 0.047247
+  Price Scale - Train MSE: 277811.24, RMSE: $527.08
+  Price Scale - Val MSE: 2333533.27, RMSE: $1527.59
 
 Starting Epoch [15/50]
 Epoch [15/50] Summary:
-  Normalized - Train MSE: 0.000255, RMSE: 0.015953
-  Normalized - Val MSE: 0.005148, RMSE: 0.071748
-  Price Scale - Train MSE: 266043.18, RMSE: $515.79
-  Price Scale - Val MSE: 5381187.57, RMSE: $2319.74
+  Normalized - Train MSE: 0.000247, RMSE: 0.015721
+  Normalized - Val MSE: 0.002235, RMSE: 0.047272
+  Price Scale - Train MSE: 258352.66, RMSE: $508.28
+  Price Scale - Val MSE: 2335961.11, RMSE: $1528.39
 
 Starting Epoch [16/50]
 Epoch [16/50] Summary:
-  Normalized - Train MSE: 0.000246, RMSE: 0.015687
-  Normalized - Val MSE: 0.003526, RMSE: 0.059381
-  Price Scale - Train MSE: 257252.73, RMSE: $507.20
-  Price Scale - Val MSE: 3686010.98, RMSE: $1919.90
+  Normalized - Train MSE: 0.000237, RMSE: 0.015410
+  Normalized - Val MSE: 0.002927, RMSE: 0.054103
+  Price Scale - Train MSE: 248244.66, RMSE: $498.24
+  Price Scale - Val MSE: 3059791.27, RMSE: $1749.23
 
 Starting Epoch [17/50]
 Epoch [17/50] Summary:
-  Normalized - Train MSE: 0.000235, RMSE: 0.015320
-  Normalized - Val MSE: 0.002981, RMSE: 0.054598
-  Price Scale - Train MSE: 245356.09, RMSE: $495.33
-  Price Scale - Val MSE: 3116063.35, RMSE: $1765.24
+  Normalized - Train MSE: 0.000242, RMSE: 0.015544
+  Normalized - Val MSE: 0.001972, RMSE: 0.044410
+  Price Scale - Train MSE: 252571.12, RMSE: $502.56
+  Price Scale - Val MSE: 2061662.80, RMSE: $1435.85
 
 Starting Epoch [18/50]
 Epoch [18/50] Summary:
-  Normalized - Train MSE: 0.000245, RMSE: 0.015662
-  Normalized - Val MSE: 0.004390, RMSE: 0.066255
-  Price Scale - Train MSE: 256405.44, RMSE: $506.36
-  Price Scale - Val MSE: 4588704.87, RMSE: $2142.13
+  Normalized - Train MSE: 0.000240, RMSE: 0.015495
+  Normalized - Val MSE: 0.002655, RMSE: 0.051527
+  Price Scale - Train MSE: 250983.34, RMSE: $500.98
+  Price Scale - Val MSE: 2775358.77, RMSE: $1665.94
 
 Starting Epoch [19/50]
 Epoch [19/50] Summary:
-  Normalized - Train MSE: 0.000235, RMSE: 0.015318
-  Normalized - Val MSE: 0.003167, RMSE: 0.056278
-  Price Scale - Train MSE: 245293.74, RMSE: $495.27
-  Price Scale - Val MSE: 3310773.46, RMSE: $1819.55
+  Normalized - Train MSE: 0.000230, RMSE: 0.015160
+  Normalized - Val MSE: 0.002534, RMSE: 0.050343
+  Price Scale - Train MSE: 240256.04, RMSE: $490.16
+  Price Scale - Val MSE: 2649360.82, RMSE: $1627.69
 
 Starting Epoch [20/50]
 Epoch [20/50] Summary:
-  Normalized - Train MSE: 0.000224, RMSE: 0.014969
-  Normalized - Val MSE: 0.002111, RMSE: 0.045941
-  Price Scale - Train MSE: 234224.20, RMSE: $483.97
-  Price Scale - Val MSE: 2206276.05, RMSE: $1485.35
+  Normalized - Train MSE: 0.000225, RMSE: 0.015010
+  Normalized - Val MSE: 0.002424, RMSE: 0.049230
+  Price Scale - Train MSE: 235524.05, RMSE: $485.31
+  Price Scale - Val MSE: 2533435.64, RMSE: $1591.68
 
 Starting Epoch [21/50]
 Epoch [21/50] Summary:
-  Normalized - Train MSE: 0.000222, RMSE: 0.014915
-  Normalized - Val MSE: 0.001814, RMSE: 0.042587
-  Price Scale - Train MSE: 232530.01, RMSE: $482.21
-  Price Scale - Val MSE: 1895839.18, RMSE: $1376.89
+  Normalized - Train MSE: 0.000225, RMSE: 0.014994
+  Normalized - Val MSE: 0.001524, RMSE: 0.039033
+  Price Scale - Train MSE: 234998.76, RMSE: $484.77
+  Price Scale - Val MSE: 1592634.91, RMSE: $1262.00
 
 Starting Epoch [22/50]
 Epoch [22/50] Summary:
-  Normalized - Train MSE: 0.000216, RMSE: 0.014700
-  Normalized - Val MSE: 0.003237, RMSE: 0.056893
-  Price Scale - Train MSE: 225891.46, RMSE: $475.28
-  Price Scale - Val MSE: 3383552.60, RMSE: $1839.44
+  Normalized - Train MSE: 0.000215, RMSE: 0.014660
+  Normalized - Val MSE: 0.002699, RMSE: 0.051949
+  Price Scale - Train MSE: 224656.94, RMSE: $473.98
+  Price Scale - Val MSE: 2821072.62, RMSE: $1679.60
 
 Starting Epoch [23/50]
 Epoch [23/50] Summary:
-  Normalized - Train MSE: 0.000214, RMSE: 0.014645
-  Normalized - Val MSE: 0.001904, RMSE: 0.043635
-  Price Scale - Train MSE: 224187.44, RMSE: $473.48
-  Price Scale - Val MSE: 1990350.10, RMSE: $1410.80
+  Normalized - Train MSE: 0.000209, RMSE: 0.014448
+  Normalized - Val MSE: 0.001321, RMSE: 0.036352
+  Price Scale - Train MSE: 218208.27, RMSE: $467.13
+  Price Scale - Val MSE: 1381345.18, RMSE: $1175.31
 
 Starting Epoch [24/50]
 Epoch [24/50] Summary:
-  Normalized - Train MSE: 0.000208, RMSE: 0.014426
-  Normalized - Val MSE: 0.001515, RMSE: 0.038927
-  Price Scale - Train MSE: 217544.65, RMSE: $466.42
-  Price Scale - Val MSE: 1584035.53, RMSE: $1258.58
+  Normalized - Train MSE: 0.000203, RMSE: 0.014263
+  Normalized - Val MSE: 0.001504, RMSE: 0.038786
+  Price Scale - Train MSE: 212648.29, RMSE: $461.14
+  Price Scale - Val MSE: 1572544.07, RMSE: $1254.01
 
 Starting Epoch [25/50]
 Epoch [25/50] Summary:
-  Normalized - Train MSE: 0.000203, RMSE: 0.014251
-  Normalized - Val MSE: 0.001575, RMSE: 0.039683
-  Price Scale - Train MSE: 212311.44, RMSE: $460.77
-  Price Scale - Val MSE: 1646171.52, RMSE: $1283.03
+  Normalized - Train MSE: 0.000200, RMSE: 0.014131
+  Normalized - Val MSE: 0.001300, RMSE: 0.036060
+  Price Scale - Train MSE: 208738.73, RMSE: $456.88
+  Price Scale - Val MSE: 1359288.87, RMSE: $1165.89
 
 Starting Epoch [26/50]
 Epoch [26/50] Summary:
-  Normalized - Train MSE: 0.000196, RMSE: 0.014007
-  Normalized - Val MSE: 0.001678, RMSE: 0.040962
-  Price Scale - Train MSE: 205083.36, RMSE: $452.86
-  Price Scale - Val MSE: 1753977.96, RMSE: $1324.38
+  Normalized - Train MSE: 0.000196, RMSE: 0.014008
+  Normalized - Val MSE: 0.001288, RMSE: 0.035890
+  Price Scale - Train MSE: 205129.35, RMSE: $452.91
+  Price Scale - Val MSE: 1346491.32, RMSE: $1160.38
 
 Starting Epoch [27/50]
 Epoch [27/50] Summary:
-  Normalized - Train MSE: 0.000192, RMSE: 0.013844
-  Normalized - Val MSE: 0.001755, RMSE: 0.041894
-  Price Scale - Train MSE: 200331.65, RMSE: $447.58
-  Price Scale - Val MSE: 1834698.24, RMSE: $1354.51
+  Normalized - Train MSE: 0.000205, RMSE: 0.014307
+  Normalized - Val MSE: 0.001258, RMSE: 0.035473
+  Price Scale - Train MSE: 213976.40, RMSE: $462.58
+  Price Scale - Val MSE: 1315366.14, RMSE: $1146.89
 
 Starting Epoch [28/50]
 Epoch [28/50] Summary:
-  Normalized - Train MSE: 0.000186, RMSE: 0.013634
-  Normalized - Val MSE: 0.002851, RMSE: 0.053398
-  Price Scale - Train MSE: 194312.80, RMSE: $440.81
-  Price Scale - Val MSE: 2980578.23, RMSE: $1726.44
+  Normalized - Train MSE: 0.000194, RMSE: 0.013913
+  Normalized - Val MSE: 0.001447, RMSE: 0.038043
+  Price Scale - Train MSE: 202357.88, RMSE: $449.84
+  Price Scale - Val MSE: 1512861.42, RMSE: $1229.98
 
 Starting Epoch [29/50]
 Epoch [29/50] Summary:
-  Normalized - Train MSE: 0.000195, RMSE: 0.013965
-  Normalized - Val MSE: 0.001436, RMSE: 0.037901
-  Price Scale - Train MSE: 203862.10, RMSE: $451.51
-  Price Scale - Val MSE: 1501581.58, RMSE: $1225.39
+  Normalized - Train MSE: 0.000191, RMSE: 0.013823
+  Normalized - Val MSE: 0.001082, RMSE: 0.032901
+  Price Scale - Train MSE: 199737.98, RMSE: $446.92
+  Price Scale - Val MSE: 1131564.20, RMSE: $1063.75
 
 Starting Epoch [30/50]
 Epoch [30/50] Summary:
-  Normalized - Train MSE: 0.000182, RMSE: 0.013497
-  Normalized - Val MSE: 0.001237, RMSE: 0.035164
-  Price Scale - Train MSE: 190428.93, RMSE: $436.38
-  Price Scale - Val MSE: 1292598.76, RMSE: $1136.93
+  Normalized - Train MSE: 0.000194, RMSE: 0.013912
+  Normalized - Val MSE: 0.001986, RMSE: 0.044562
+  Price Scale - Train MSE: 202327.86, RMSE: $449.81
+  Price Scale - Val MSE: 2075823.92, RMSE: $1440.77
 
 Starting Epoch [31/50]
 Epoch [31/50] Summary:
-  Normalized - Train MSE: 0.000183, RMSE: 0.013530
-  Normalized - Val MSE: 0.001099, RMSE: 0.033149
-  Price Scale - Train MSE: 191368.52, RMSE: $437.46
-  Price Scale - Val MSE: 1148647.80, RMSE: $1071.75
+  Normalized - Train MSE: 0.000181, RMSE: 0.013453
+  Normalized - Val MSE: 0.001013, RMSE: 0.031835
+  Price Scale - Train MSE: 189193.60, RMSE: $434.96
+  Price Scale - Val MSE: 1059420.30, RMSE: $1029.28
 
 Starting Epoch [32/50]
 Epoch [32/50] Summary:
-  Normalized - Train MSE: 0.000185, RMSE: 0.013605
-  Normalized - Val MSE: 0.001611, RMSE: 0.040142
-  Price Scale - Train MSE: 193487.79, RMSE: $439.87
-  Price Scale - Val MSE: 1684409.60, RMSE: $1297.85
+  Normalized - Train MSE: 0.000188, RMSE: 0.013719
+  Normalized - Val MSE: 0.002779, RMSE: 0.052712
+  Price Scale - Train MSE: 196734.78, RMSE: $443.55
+  Price Scale - Val MSE: 2904532.19, RMSE: $1704.27
 
 Starting Epoch [33/50]
 Epoch [33/50] Summary:
-  Normalized - Train MSE: 0.000178, RMSE: 0.013342
-  Normalized - Val MSE: 0.001435, RMSE: 0.037878
-  Price Scale - Train MSE: 186088.29, RMSE: $431.38
-  Price Scale - Val MSE: 1499756.32, RMSE: $1224.65
+  Normalized - Train MSE: 0.000185, RMSE: 0.013610
+  Normalized - Val MSE: 0.001407, RMSE: 0.037505
+  Price Scale - Train MSE: 193627.70, RMSE: $440.03
+  Price Scale - Val MSE: 1470375.16, RMSE: $1212.59
 
 Starting Epoch [34/50]
 Epoch [34/50] Summary:
-  Normalized - Train MSE: 0.000183, RMSE: 0.013542
-  Normalized - Val MSE: 0.001311, RMSE: 0.036206
-  Price Scale - Train MSE: 191706.21, RMSE: $437.84
-  Price Scale - Val MSE: 1370327.01, RMSE: $1170.61
+  Normalized - Train MSE: 0.000179, RMSE: 0.013390
+  Normalized - Val MSE: 0.001492, RMSE: 0.038621
+  Price Scale - Train MSE: 187423.38, RMSE: $432.92
+  Price Scale - Val MSE: 1559243.07, RMSE: $1248.70
 
 Starting Epoch [35/50]
 Epoch [35/50] Summary:
-  Normalized - Train MSE: 0.000173, RMSE: 0.013168
-  Normalized - Val MSE: 0.001122, RMSE: 0.033491
-  Price Scale - Train MSE: 181252.88, RMSE: $425.74
-  Price Scale - Val MSE: 1172513.85, RMSE: $1082.83
+  Normalized - Train MSE: 0.000170, RMSE: 0.013031
+  Normalized - Val MSE: 0.001372, RMSE: 0.037036
+  Price Scale - Train MSE: 177500.95, RMSE: $421.31
+  Price Scale - Val MSE: 1433881.16, RMSE: $1197.45
 
 Starting Epoch [36/50]
 Epoch [36/50] Summary:
-  Normalized - Train MSE: 0.000172, RMSE: 0.013112
-  Normalized - Val MSE: 0.001725, RMSE: 0.041532
-  Price Scale - Train MSE: 179730.39, RMSE: $423.95
-  Price Scale - Val MSE: 1803141.76, RMSE: $1342.81
+  Normalized - Train MSE: 0.000178, RMSE: 0.013360
+  Normalized - Val MSE: 0.001581, RMSE: 0.039757
+  Price Scale - Train MSE: 186584.13, RMSE: $431.95
+  Price Scale - Val MSE: 1652266.25, RMSE: $1285.41
 
 Starting Epoch [37/50]
 Epoch [37/50] Summary:
-  Normalized - Train MSE: 0.000167, RMSE: 0.012940
-  Normalized - Val MSE: 0.001543, RMSE: 0.039283
-  Price Scale - Train MSE: 175036.43, RMSE: $418.37
-  Price Scale - Val MSE: 1613080.87, RMSE: $1270.07
+  Normalized - Train MSE: 0.000177, RMSE: 0.013307
+  Normalized - Val MSE: 0.000719, RMSE: 0.026808
+  Price Scale - Train MSE: 185101.69, RMSE: $430.23
+  Price Scale - Val MSE: 751274.96, RMSE: $866.76
 
 Starting Epoch [38/50]
 Epoch [38/50] Summary:
-  Normalized - Train MSE: 0.000170, RMSE: 0.013050
-  Normalized - Val MSE: 0.000863, RMSE: 0.029380
-  Price Scale - Train MSE: 178017.80, RMSE: $421.92
-  Price Scale - Val MSE: 902317.07, RMSE: $949.90
+  Normalized - Train MSE: 0.000171, RMSE: 0.013088
+  Normalized - Val MSE: 0.001176, RMSE: 0.034291
+  Price Scale - Train MSE: 179056.17, RMSE: $423.15
+  Price Scale - Val MSE: 1229185.19, RMSE: $1108.69
 
 Starting Epoch [39/50]
 Epoch [39/50] Summary:
-  Normalized - Train MSE: 0.000164, RMSE: 0.012824
-  Normalized - Val MSE: 0.000746, RMSE: 0.027320
-  Price Scale - Train MSE: 171899.98, RMSE: $414.61
-  Price Scale - Val MSE: 780201.71, RMSE: $883.29
+  Normalized - Train MSE: 0.000167, RMSE: 0.012931
+  Normalized - Val MSE: 0.001846, RMSE: 0.042960
+  Price Scale - Train MSE: 174797.41, RMSE: $418.09
+  Price Scale - Val MSE: 1929281.03, RMSE: $1388.99
 
 Starting Epoch [40/50]
 Epoch [40/50] Summary:
-  Normalized - Train MSE: 0.000170, RMSE: 0.013040
-  Normalized - Val MSE: 0.000975, RMSE: 0.031227
-  Price Scale - Train MSE: 177755.38, RMSE: $421.61
-  Price Scale - Val MSE: 1019339.37, RMSE: $1009.62
+  Normalized - Train MSE: 0.000169, RMSE: 0.012989
+  Normalized - Val MSE: 0.002048, RMSE: 0.045252
+  Price Scale - Train MSE: 176355.55, RMSE: $419.95
+  Price Scale - Val MSE: 2140544.91, RMSE: $1463.06
 
 Starting Epoch [41/50]
 Epoch [41/50] Summary:
-  Normalized - Train MSE: 0.000161, RMSE: 0.012676
-  Normalized - Val MSE: 0.001706, RMSE: 0.041304
-  Price Scale - Train MSE: 167953.66, RMSE: $409.82
-  Price Scale - Val MSE: 1783405.03, RMSE: $1335.44
+  Normalized - Train MSE: 0.000167, RMSE: 0.012910
+  Normalized - Val MSE: 0.000870, RMSE: 0.029489
+  Price Scale - Train MSE: 174236.06, RMSE: $417.42
+  Price Scale - Val MSE: 909002.09, RMSE: $953.42
 
 Starting Epoch [42/50]
 Epoch [42/50] Summary:
-  Normalized - Train MSE: 0.000158, RMSE: 0.012579
-  Normalized - Val MSE: 0.001024, RMSE: 0.032005
-  Price Scale - Train MSE: 165395.50, RMSE: $406.69
-  Price Scale - Val MSE: 1070775.16, RMSE: $1034.78
+  Normalized - Train MSE: 0.000159, RMSE: 0.012619
+  Normalized - Val MSE: 0.000711, RMSE: 0.026667
+  Price Scale - Train MSE: 166447.53, RMSE: $407.98
+  Price Scale - Val MSE: 743394.45, RMSE: $862.20
 
 Starting Epoch [43/50]
 Epoch [43/50] Summary:
-  Normalized - Train MSE: 0.000162, RMSE: 0.012710
-  Normalized - Val MSE: 0.001339, RMSE: 0.036588
-  Price Scale - Train MSE: 168880.21, RMSE: $410.95
-  Price Scale - Val MSE: 1399352.71, RMSE: $1182.94
+  Normalized - Train MSE: 0.000159, RMSE: 0.012590
+  Normalized - Val MSE: 0.000936, RMSE: 0.030590
+  Price Scale - Train MSE: 165690.16, RMSE: $407.05
+  Price Scale - Val MSE: 978200.94, RMSE: $989.04
 
 Starting Epoch [44/50]
 Epoch [44/50] Summary:
-  Normalized - Train MSE: 0.000155, RMSE: 0.012465
-  Normalized - Val MSE: 0.000953, RMSE: 0.030864
-  Price Scale - Train MSE: 162427.06, RMSE: $403.02
-  Price Scale - Val MSE: 995753.14, RMSE: $997.87
+  Normalized - Train MSE: 0.000166, RMSE: 0.012868
+  Normalized - Val MSE: 0.001412, RMSE: 0.037572
+  Price Scale - Train MSE: 173092.53, RMSE: $416.04
+  Price Scale - Val MSE: 1475663.95, RMSE: $1214.77
 
 Starting Epoch [45/50]
 Epoch [45/50] Summary:
-  Normalized - Train MSE: 0.000162, RMSE: 0.012736
-  Normalized - Val MSE: 0.001187, RMSE: 0.034456
-  Price Scale - Train MSE: 169568.46, RMSE: $411.79
-  Price Scale - Val MSE: 1241043.56, RMSE: $1114.02
+  Normalized - Train MSE: 0.000156, RMSE: 0.012481
+  Normalized - Val MSE: 0.000823, RMSE: 0.028683
+  Price Scale - Train MSE: 162833.48, RMSE: $403.53
+  Price Scale - Val MSE: 860016.29, RMSE: $927.37
 
 Starting Epoch [46/50]
 Epoch [46/50] Summary:
-  Normalized - Train MSE: 0.000157, RMSE: 0.012515
-  Normalized - Val MSE: 0.000806, RMSE: 0.028393
-  Price Scale - Train MSE: 163737.44, RMSE: $404.64
-  Price Scale - Val MSE: 842738.82, RMSE: $918.01
+  Normalized - Train MSE: 0.000157, RMSE: 0.012543
+  Normalized - Val MSE: 0.000775, RMSE: 0.027836
+  Price Scale - Train MSE: 164457.19, RMSE: $405.53
+  Price Scale - Val MSE: 809947.44, RMSE: $899.97
 
 Starting Epoch [47/50]
 Epoch [47/50] Summary:
-  Normalized - Train MSE: 0.000156, RMSE: 0.012487
-  Normalized - Val MSE: 0.001282, RMSE: 0.035802
-  Price Scale - Train MSE: 162993.50, RMSE: $403.72
-  Price Scale - Val MSE: 1339865.96, RMSE: $1157.53
+  Normalized - Train MSE: 0.000156, RMSE: 0.012471
+  Normalized - Val MSE: 0.001698, RMSE: 0.041202
+  Price Scale - Train MSE: 162574.90, RMSE: $403.21
+  Price Scale - Val MSE: 1774609.66, RMSE: $1332.14
 
 Starting Epoch [48/50]
 Epoch [48/50] Summary:
-  Normalized - Train MSE: 0.000154, RMSE: 0.012400
-  Normalized - Val MSE: 0.001162, RMSE: 0.034086
-  Price Scale - Train MSE: 160738.86, RMSE: $400.92
-  Price Scale - Val MSE: 1214552.58, RMSE: $1102.07
+  Normalized - Train MSE: 0.000154, RMSE: 0.012401
+  Normalized - Val MSE: 0.000648, RMSE: 0.025454
+  Price Scale - Train MSE: 160766.64, RMSE: $400.96
+  Price Scale - Val MSE: 677256.08, RMSE: $822.96
 
 Starting Epoch [49/50]
 Epoch [49/50] Summary:
-  Normalized - Train MSE: 0.000152, RMSE: 0.012340
-  Normalized - Val MSE: 0.001355, RMSE: 0.036808
-  Price Scale - Train MSE: 159171.54, RMSE: $398.96
-  Price Scale - Val MSE: 1416246.52, RMSE: $1190.06
+  Normalized - Train MSE: 0.000150, RMSE: 0.012256
+  Normalized - Val MSE: 0.000822, RMSE: 0.028671
+  Price Scale - Train MSE: 157026.91, RMSE: $396.27
+  Price Scale - Val MSE: 859308.85, RMSE: $926.99
 
 Starting Epoch [50/50]
 Epoch [50/50] Summary:
-  Normalized - Train MSE: 0.000148, RMSE: 0.012166
-  Normalized - Val MSE: 0.001174, RMSE: 0.034266
-  Price Scale - Train MSE: 154711.48, RMSE: $393.33
-  Price Scale - Val MSE: 1227414.81, RMSE: $1107.89
-Training completed
-Training completed in 183.40 seconds
+  Normalized - Train MSE: 0.000150, RMSE: 0.012240
+  Normalized - Val MSE: 0.000653, RMSE: 0.025555
+  Price Scale - Train MSE: 156603.32, RMSE: $395.73
+  Price Scale - Val MSE: 682676.76, RMSE: $826.24
+Training completed in 198.69 seconds
 Saving model and results...
 Starting evaluation process...
 Generating predictions...
@@ -412,7 +411,7 @@ Prediction analysis plots saved
 Metrics and sample predictions tables saved
 Error distribution and time series plots saved
 Evaluation metrics (for test set):
-  Mean Squared Error: 1813358.25
-  Root Mean Squared Error: 1346.61
-  Mean Absolute Error: 1039.00
-  R² Score: 0.95
+  Mean Squared Error: 877343.26
+  Root Mean Squared Error: 936.67
+  Mean Absolute Error: 605.91
+  R² Score: 0.97

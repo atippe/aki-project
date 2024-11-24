@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import pickle
 import logging
 
-from experiments.experiment_4.dataset_processor import BasicDataProcessor
+from experiments.experiment_5.dataset_processor import BasicDataProcessor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-from experiments.experiment_4.ssa_optimizer import SSAOptimizer
+from experiments.experiment_5.ssa_optimizer import SSAOptimizer
 
 
 def setup_logging(results_dir):
@@ -551,7 +551,7 @@ def main():
 
     # Save model specifications
     config_dict = {
-        'model_type': 'LSTM with SSA',
+        'model_type': 'LSTM with SSA (improved)',
         'hidden_size': hidden_size,
         'input_size': input_size,
         'num_epochs': num_epochs,
