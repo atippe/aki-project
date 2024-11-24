@@ -1,0 +1,103 @@
+=== Starting new training run ===
+Parameters:
+  Hidden size: 100
+  Epochs: 5
+  Batch size: 32
+  Learning rate: 0.0005
+  Device: cpu
+Loading pre-processed data...
+Sequence length: 60
+Feature count: 5
+Close price index: 3
+Training set shape: torch.Size([4224, 60, 5])
+Validation set shape: torch.Size([858, 60, 5])
+Test set shape: torch.Size([858, 60, 5])
+Model input size: 5
+Starting training process...
+Starting training process
+Model architecture:
+PricePredictionModel(
+  (lstm): CustomLSTM()
+  (linear): Linear(in_features=100, out_features=1, bias=True)
+)
+Training parameters: epochs=5, device=cpu
+Optimizer: Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.0005
+    maximize: False
+    weight_decay: 1e-05
+)
+Loss function: MSELoss()
+Training batches: 132
+Validation batches: 27
+
+Starting Epoch [1/5]
+
+First batch details:
+Scaled predictions (first 3):
+[[0.05953646]
+ [0.04817102]
+ [0.05328423]]
+Scaled targets (first 3):
+[0.6400817  0.41729942 0.66838425]
+Price predictions (first 3):
+[17581.91486878 17214.4510011  17379.76966951]
+Price targets (first 3):
+[36351.92961832 29148.99964602 37266.99918436]
+Initial normalized MSE: 0.168980
+Initial price-scale MSE: 176641606.38
+Epoch [1/5] Summary:
+  Normalized - Train MSE: 0.017876, RMSE: 0.133702
+  Normalized - Val MSE: 0.002425, RMSE: 0.049244
+  Price Scale - Train MSE: 18686651.63, RMSE: $4322.81
+  Price Scale - Val MSE: 2534940.88, RMSE: $1592.15
+
+Starting Epoch [2/5]
+Epoch [2/5] Summary:
+  Normalized - Train MSE: 0.000503, RMSE: 0.022417
+  Normalized - Val MSE: 0.015220, RMSE: 0.123371
+  Price Scale - Train MSE: 525317.39, RMSE: $724.79
+  Price Scale - Val MSE: 15910426.45, RMSE: $3988.79
+
+Starting Epoch [3/5]
+Epoch [3/5] Summary:
+  Normalized - Train MSE: 0.000418, RMSE: 0.020448
+  Normalized - Val MSE: 0.014179, RMSE: 0.119077
+  Price Scale - Train MSE: 437068.97, RMSE: $661.11
+  Price Scale - Val MSE: 14822308.16, RMSE: $3849.98
+
+Starting Epoch [4/5]
+Epoch [4/5] Summary:
+  Normalized - Train MSE: 0.000394, RMSE: 0.019841
+  Normalized - Val MSE: 0.013607, RMSE: 0.116649
+  Price Scale - Train MSE: 411531.38, RMSE: $641.51
+  Price Scale - Val MSE: 14223916.73, RMSE: $3771.46
+
+Starting Epoch [5/5]
+Epoch [5/5] Summary:
+  Normalized - Train MSE: 0.000381, RMSE: 0.019519
+  Normalized - Val MSE: 0.008277, RMSE: 0.090979
+  Price Scale - Train MSE: 398275.60, RMSE: $631.09
+  Price Scale - Val MSE: 8652487.32, RMSE: $2941.51
+Training completed
+Saving model and results...
+Starting evaluation process...
+Generating predictions...
+Creating visualizations...
+Training history plot saved
+Prediction analysis plots saved
+Metrics and sample predictions tables saved
+Error distribution and time series plots saved
+Evaluation metrics:
+  Mean Squared Error: 14953774.13
+  Root Mean Squared Error: 3867.01
+  Mean Absolute Error: 3152.99
+  R² Score: 0.57
+Training completed in 21.62 seconds

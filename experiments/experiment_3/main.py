@@ -1,3 +1,5 @@
+import time
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -9,6 +11,7 @@ import pickle
 import logging
 
 from experiments.experiment_3.dataset_processor import BasicDataProcessor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 
 def setup_logging(results_dir):
@@ -27,7 +30,8 @@ def setup_logging(results_dir):
     return logging.getLogger(__name__)
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs, device, scaler, logger, close_idx, feature_count):
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs, device, scaler, logger, close_idx,
+                feature_count):
     logger.info("Starting training process")
     logger.info(f"Model architecture:\n{model}")
     logger.info(f"Training parameters: epochs={num_epochs}, device={device}")
@@ -53,9 +57,8 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         for batch_idx, (batch_X, batch_y) in enumerate(train_loader):
             batch_X, batch_y = batch_X.to(device), batch_y.to(device)
 
-            # Log batch shapes occasionally
-            if batch_idx == 0:
-                logger.debug(f"Batch shapes - X: {batch_X.shape}, y: {batch_y.shape}")
+            if device == 'cuda':
+                logger.info(f"CUDA Memory: {torch.cuda.memory_allocated() / 1024 ** 2:.2f}MB allocated")
 
             optimizer.zero_grad()
             outputs = model(batch_X)
@@ -145,10 +148,250 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
     return train_losses, val_losses
 
 
+def generate_predictions(model, test_loader, device, processed_data, feature_count, close_idx):
+    model.eval()
+    y_pred_list = []
+    y_test_list = []
+
+    with torch.no_grad():
+        for X, y in test_loader:
+            X, y = X.to(device), y.to(device)
+            outputs = model(X)
+
+            scaled_pred = outputs.cpu().numpy()
+            scaled_target = y.cpu().numpy()
+
+            pred_features = np.zeros((scaled_pred.shape[0], feature_count))
+            pred_features[:, close_idx] = scaled_pred.flatten()
+
+            target_features = np.zeros((scaled_target.shape[0], feature_count))
+            target_features[:, close_idx] = scaled_target
+
+            price_pred = processed_data['scaler'].inverse_transform(pred_features)[:, close_idx]
+            price_target = processed_data['scaler'].inverse_transform(target_features)[:, close_idx]
+
+            y_pred_list.extend(price_pred)
+            y_test_list.extend(price_target)
+
+    return pd.Series(np.array(y_pred_list)), pd.Series(np.array(y_test_list))
+
+
+def plot_training_history(train_losses, val_losses):
+    fig = plt.figure(figsize=(10, 5))
+    plt.plot(train_losses, label='Training Loss')
+    plt.plot(val_losses, label='Validation Loss')
+    plt.title('Model Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss (Original Scale)')
+    plt.legend()
+    return fig
+
+
+def plot_prediction_analysis(y_test, y_pred):
+    # Actual vs Predicted Plot
+    fig1 = plt.figure(figsize=(10, 6))
+    plt.scatter(y_test, y_pred, alpha=0.5)
+    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
+    plt.xlabel('Actual Price ($)')
+    plt.ylabel('Predicted Price ($)')
+    plt.title('Price: Actual vs Predicted')
+
+    plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
+    plt.gca().yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
+
+    plt.grid(True)
+    plt.tight_layout()
+
+    # Residuals Plot
+    residuals = y_test - y_pred
+    fig2 = plt.figure(figsize=(10, 6))
+    plt.scatter(y_pred, residuals, alpha=0.5)
+    plt.xlabel('Predicted Price ($)')
+    plt.ylabel('Residuals ($)')
+    plt.axhline(y=0, color='r', linestyle='--')
+    plt.title('Residuals Analysis')
+
+    plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
+    plt.gca().yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
+
+    plt.grid(True)
+    plt.tight_layout()
+
+    return residuals, fig1, fig2
+
+
+def calculate_metrics(y_test, y_pred):
+    return {
+        'Mean Squared Error': mean_squared_error(y_test, y_pred),
+        'Root Mean Squared Error': np.sqrt(mean_squared_error(y_test, y_pred)),
+        'Mean Absolute Error': mean_absolute_error(y_test, y_pred),
+        'R² Score': r2_score(y_test, y_pred)
+    }
+
+
+def create_styled_table(data, title, figsize=(10, 3), custom_widths=None):
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.axis('off')
+
+    # Set column widths based on content
+    if custom_widths:
+        colWidths = custom_widths
+    else:
+        colWidths = [0.7 / len(data.columns)] * len(data.columns)
+
+    # Create table
+    table = ax.table(
+        cellText=data.values,
+        colLabels=data.columns,
+        cellLoc='center',
+        loc='center',
+        colWidths=colWidths
+    )
+
+    table.auto_set_font_size(False)
+    table.set_fontsize(9)
+    table.scale(1.2, 1.5)
+
+    # Color scheme
+    header_color = '#3d5a80'
+    cell_color = '#f0f8ff'
+
+    # Style header
+    for j, cell in enumerate(table._cells[(0, j)] for j in range(len(data.columns))):
+        cell.set_facecolor(header_color)
+        cell.set_text_props(color='white', weight='bold')
+        cell.set_height(0.15)
+
+    # Style cells
+    for i in range(len(data)):
+        for j in range(len(data.columns)):
+            cell = table._cells[(i + 1, j)]
+            cell.set_facecolor(cell_color)
+            cell.set_height(0.15)
+
+    plt.subplots_adjust(top=0.85)
+    plt.title(title, pad=30, fontsize=12, fontweight='bold', y=1.2)
+    plt.tight_layout()
+    #plt.savefig(results_dir / filename, bbox_inches='tight', dpi=300, facecolor='white')
+
+    return fig
+
+
+def save_metrics_and_samples(y_test, y_pred, metrics, processed_data):
+    # Metrics table
+    metrics_df = pd.DataFrame({
+        'Metric': list(metrics.keys()),
+        'Value': [f"{v:,.2f}" for v in metrics.values()]
+    })
+    fig1 = create_styled_table(metrics_df, 'Model Performance Metrics')
+
+    # Sample predictions table
+    sample_size = 10
+    indices = np.random.randint(0, len(y_test), sample_size)
+
+    # Get dates from original data
+    test_dates = processed_data['original_data'].index[-len(y_test):]  # Get dates for test set
+    selected_dates = test_dates[indices]  # Get dates for selected samples
+
+    comparison_df = pd.DataFrame({
+        'Date': selected_dates.strftime('%Y-%m-%d %H:%M'),
+        'Actual Price': [f"${x:,.2f}" for x in y_test.iloc[indices]],
+        'Predicted Price': [f"${x:,.2f}" for x in y_pred[indices]],
+        'Absolute Error': [f"${x:,.2f}" for x in abs(y_test.iloc[indices] - y_pred[indices])],
+        'Percentage Error': [f"{x:.2f}%" for x in
+                             abs((y_test.iloc[indices] - y_pred[indices]) / y_test.iloc[indices] * 100)]
+    })
+
+    fig2 = create_styled_table(
+        comparison_df,
+        'Sample Predictions Comparison',
+        figsize=(12, 4),
+        custom_widths=[0.2, 0.2, 0.2, 0.2, 0.2]
+    )
+
+    return fig1, fig2
+
+
+def plot_error_distribution(residuals):
+    fig = plt.figure(figsize=(10, 6))
+    plt.hist(residuals, bins=50, edgecolor='black')
+    plt.xlabel('Prediction Error')
+    plt.ylabel('Frequency')
+    plt.title('Distribution of Prediction Errors')
+    plt.tight_layout()
+
+    return fig
+
+
+def plot_time_series(y_test, y_pred, processed_data):
+    # Get dates from original data
+    original_data = processed_data['original_data']
+    sequence_length = processed_data['metadata']['seq_length']
+
+    # Get the dates for the test set
+    test_dates = original_data.index[-len(y_test):]  # Take the last portion corresponding to test set
+
+    fig = plt.figure(figsize=(15, 6))
+    plt.plot(test_dates, y_test.values, label='Actual Price', color='blue', alpha=0.7)
+    plt.plot(test_dates, y_pred, label='Predicted Price', color='red', alpha=0.7)
+    plt.title('Price: Actual vs Predicted')
+    plt.xlabel('Date')
+    plt.ylabel('Price ($)')
+    plt.legend()
+    plt.grid(True)
+    plt.xticks(rotation=45)
+
+    # Format y-axis to show dollar amounts
+    plt.gca().yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'${x:,.0f}'))
+
+    plt.tight_layout()
+
+    return fig
+
+
+def evaluate_and_visualize(model, test_loader, device, processed_data, feature_count, close_idx, train_losses,
+                           val_losses, results_dir, logger):
+    # Generate predictions
+    logger.info("Generating predictions...")
+    y_pred, y_test = generate_predictions(model, test_loader, device, processed_data, feature_count, close_idx)
+
+    # Create visualizations
+    logger.info("Creating visualizations...")
+    plot_1 = plot_training_history(train_losses, val_losses)
+    plot_1.savefig(results_dir / 'training_history.png', bbox_inches='tight', dpi=300)
+    plt.close()
+    logger.info("Training history plot saved")
+
+    residuals, plot_2, plot_3 = plot_prediction_analysis(y_test, y_pred)
+    plot_2.savefig(results_dir / 'actual_vs_predicted.png', bbox_inches='tight', dpi=300)
+    plot_3.savefig(results_dir / 'residuals.png', bbox_inches='tight', dpi=300)
+    plt.close('all')
+    logger.info("Prediction analysis plots saved")
+
+    # Calculate metrics and create tables
+    metrics = calculate_metrics(y_test, y_pred)
+    plot_4, plot_5 = save_metrics_and_samples(y_test, y_pred, metrics, processed_data)
+    plot_4.savefig(results_dir / 'metrics_table.png', bbox_inches='tight', dpi=300, facecolor='white')
+    plot_5.savefig(results_dir / 'sample_predictions.png', bbox_inches='tight', dpi=300, facecolor='white')
+    plt.close('all')
+    logger.info("Metrics and sample predictions tables saved")
+
+    # Create additional plots
+    plot_6 = plot_error_distribution(residuals)
+    plot_7 = plot_time_series(y_test, y_pred, processed_data)
+    plot_6.savefig(results_dir / 'error_distribution.png', bbox_inches='tight', dpi=300)
+    plot_7.savefig(results_dir / 'time_series.png', bbox_inches='tight', dpi=300)
+    plt.close('all')
+    logger.info("Error distribution and time series plots saved")
+
+    return metrics
+
+
+
 def main():
     # Parameters
     hidden_size = 100
-    num_epochs = 50
+    num_epochs = 5
     batch_size = 32
     learning_rate = 0.0005
     device = 'cpu'
@@ -159,6 +402,8 @@ def main():
     results_dir.mkdir(exist_ok=True)
 
     logger = setup_logging(results_dir)
+
+    start_time = time.time()
 
     # Log training configuration
     logger.info("=== Starting new training run ===")
@@ -235,7 +480,6 @@ def main():
         num_epochs, device, processed_data['scaler'], logger, close_idx, feature_count
     )
 
-
     # Save results
     logger.info("Saving model and results...")
     save_path = results_dir / 'lstm_model.pth'
@@ -247,16 +491,19 @@ def main():
         'metadata': metadata
     }, save_path)
 
-    # Plot training history
-    plt.figure(figsize=(10, 5))
-    plt.plot(train_losses, label='Training Loss')
-    plt.plot(val_losses, label='Validation Loss')
-    plt.title('Model Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss (Original Scale)')
-    plt.legend()
-    plt.savefig(results_dir / 'training_history.png')
-    plt.close()
+    # Evaluation
+    logger.info("Starting evaluation process...")
+    metrics = evaluate_and_visualize(
+        model, test_loader, device, processed_data, feature_count, close_idx, train_losses, val_losses, results_dir,
+        logger
+    )
+
+    # Log metrics
+    logger.info("Evaluation metrics:")
+    for k, v in metrics.items():
+        logger.info(f"  {k}: {v:.2f}")
+
+    logger.info(f"Training completed in {time.time() - start_time:.2f} seconds")
 
 
 if __name__ == "__main__":

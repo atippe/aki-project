@@ -300,12 +300,12 @@ class BasicDataProcessor:
         tensors_dir = processed_dir / 'tensors'
 
         # Load tensors
-        X_train = torch.load(tensors_dir / 'X_train.pt')
-        y_train = torch.load(tensors_dir / 'y_train.pt')
-        X_val = torch.load(tensors_dir / 'X_val.pt')
-        y_val = torch.load(tensors_dir / 'y_val.pt')
-        X_test = torch.load(tensors_dir / 'X_test.pt')
-        y_test = torch.load(tensors_dir / 'y_test.pt')
+        X_train = torch.load(tensors_dir / 'X_train.pt', weights_only=True)
+        y_train = torch.load(tensors_dir / 'y_train.pt', weights_only=True)
+        X_val = torch.load(tensors_dir / 'X_val.pt', weights_only=True)
+        y_val = torch.load(tensors_dir / 'y_val.pt', weights_only=True)
+        X_test = torch.load(tensors_dir / 'X_test.pt', weights_only=True)
+        y_test = torch.load(tensors_dir / 'y_test.pt', weights_only=True)
 
         # Load scaler
         with open(processed_dir / 'scaler.pkl', 'rb') as f:
