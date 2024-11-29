@@ -11,6 +11,9 @@ data/processed/*
 *.pkl
 *.h5
 
+# Torch tensors
+*.pt
+
 # IDE
 .idea/
 .vscode/

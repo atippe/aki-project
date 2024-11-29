@@ -1,0 +1,110 @@
+
+==================================================
+TIME SERIES DATA PROCESSING
+==================================================
+
+Loading data from:
+File: ETHUSD_1m_Combined_Index.csv
+
+No features specified, using default OHLCV
+
+No target feature specified, using default 'Close'
+
+Feature validation:
+Required features: ['Volume', 'Open', 'High', 'Low', 'Close']
+Target feature: Close
+All required features found in dataset
+
+Feature statistics:
+
+Volume:
+  Min: 0.00
+  Max: 28118520.97
+  Mean: 44322.20
+  Std: 207651.23
+
+Open:
+  Min: 5.92
+  Max: 4865.94
+  Mean: 1272.93
+  Std: 1206.77
+
+High:
+  Min: 5.93
+  Max: 4873.44
+  Mean: 1273.84
+  Std: 1207.53
+
+Low:
+  Min: 0.86
+  Max: 4860.47
+  Mean: 1272.02
+  Std: 1206.01
+
+Close:
+  Min: 5.92
+  Max: 4865.94
+  Mean: 1272.93
+  Std: 1206.77
+
+Initial data size: 4222723 entries
+
+Filtering data from 2016-09-29...
+Remaining entries after filtering: 4222723
+
+Resampling data to 4h intervals...
+
+No aggregation rules specified, using default for OHLCV
+Using aggregation methods: {'Volume': 'sum', 'Open': 'first', 'High': 'max', 'Low': 'min', 'Close': 'last'}
+Final entries after resampling: 17722
+
+Data split:
+Training set: 12405 entries (70.0%)
+Validation set: 2658 entries (15.0%)
+Test set: 2659 entries (15.0%)
+
+Applying log transformation and scaling data...
+
+Creating sequences (length=60)...
+
+Creating training sequences...
+
+Sequence creation details:
+Target feature: Close (index: 4)
+Available features: ['Volume', 'Open', 'High', 'Low', 'Close']
+Sequence length: 60
+Created 12345 sequences
+Target value range: min=-2.5617, max=1.7177
+
+Creating validation sequences...
+
+Sequence creation details:
+Target feature: Close (index: 4)
+Available features: ['Volume', 'Open', 'High', 'Low', 'Close']
+Sequence length: 60
+Created 2598 sequences
+Target value range: min=0.6238, max=1.1744
+
+Creating testing sequences...
+
+Sequence creation details:
+Target feature: Close (index: 4)
+Available features: ['Volume', 'Open', 'High', 'Low', 'Close']
+Sequence length: 60
+Created 2599 sequences
+Target value range: min=0.9610, max=1.6027
+
+Sequence shapes:
+X_train: (12345, 60, 5)
+y_train: (12345,)
+X_val: (2598, 60, 5)
+y_val: (2598,)
+X_test: (2599, 60, 5)
+y_test: (2599,)
+
+Converting to PyTorch tensors...
+
+Saving processed data...
+
+Processing completed in 7.42 seconds
+==================================================

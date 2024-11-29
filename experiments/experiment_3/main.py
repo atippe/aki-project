@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import pickle
 import logging
 
-from experiments.experiment_3.dataset_processor import BasicDataProcessor
+from dataset_processor import BasicDataProcessor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 
@@ -220,11 +220,37 @@ def plot_prediction_analysis(y_test, y_pred):
 
 
 def calculate_metrics(y_test, y_pred):
+    # Basic metrics
+    mse = mean_squared_error(y_test, y_pred)
+    rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+
+    mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100  # Mean Absolute Percentage Error
+    wmape = np.sum(np.abs(y_test - y_pred)) / np.sum(y_test) * 100  # Weighted MAPE
+
+    # Directional accuracy (for price movements)
+    y_test_diff = np.diff(y_test)
+    y_pred_diff = np.diff(y_pred)
+    directional_accuracy = np.mean(
+        ((y_test_diff >= 0) & (y_pred_diff >= 0)) |
+        ((y_test_diff < 0) & (y_pred_diff < 0))
+    ) * 100
+
+    # Maximum drawdown in predictions
+    max_error = np.max(np.abs(y_test - y_pred))
+    mean_pct_error = np.mean((y_test - y_pred) / y_test) * 100
+
     return {
-        'Mean Squared Error': mean_squared_error(y_test, y_pred),
-        'Root Mean Squared Error': np.sqrt(mean_squared_error(y_test, y_pred)),
-        'Mean Absolute Error': mean_absolute_error(y_test, y_pred),
-        'R² Score': r2_score(y_test, y_pred)
+        'Mean Squared Error ($)': mse,
+        'Root Mean Squared Error ($)': rmse,
+        'Mean Absolute Error ($)': mae,
+        'Mean Absolute Percentage Error (%)': mape,
+        'Weighted MAPE (%)': wmape,
+        'Directional Accuracy (%)': directional_accuracy,
+        'Maximum Absolute Error ($)': max_error,
+        'Mean Percentage Error (%)': mean_pct_error,
+        'R² Score': r2
     }
 
 
@@ -431,9 +457,10 @@ def main():
     learning_rate = 0.0005
     device = 'cpu'
 
+    crypto_currency = 'eth'
     # Setup directories and logging
-    data_dir = Path(__file__).parent / 'processed_data'
-    results_dir = Path(__file__).parent / 'results'
+    data_dir = Path(__file__).parent / 'processed_data' / crypto_currency
+    results_dir = Path(__file__).parent / 'results' / crypto_currency
     results_dir.mkdir(exist_ok=True)
 
     logger = setup_logging(results_dir)
@@ -442,6 +469,7 @@ def main():
 
     # Log training configuration
     logger.info("=== Starting new training run ===")
+    logger.info(f"Crypto Currency: {crypto_currency}")
     logger.info(f"Parameters:")
     logger.info(f"  Hidden size: {hidden_size}")
     logger.info(f"  Epochs: {num_epochs}")
@@ -456,12 +484,29 @@ def main():
     # Log dataset information
     feature_count = len(processed_data['metadata']['feature_indices'])
     close_idx = processed_data['metadata']['feature_indices']['Close']
+    scaler = processed_data['scaler']
+
+    logger.info("\n=== Dataset Configuration ===")
     logger.info(f"Sequence length: {processed_data['metadata']['seq_length']}")
     logger.info(f"Feature count: {feature_count}")
+    logger.info(f"Feature indices: {processed_data['metadata']['feature_indices']}")
     logger.info(f"Close price index: {close_idx}")
+
+    logger.info("\n=== Data Shapes ===")
     logger.info(f"Training set shape: {processed_data['X_train'].shape}")
     logger.info(f"Validation set shape: {processed_data['X_val'].shape}")
     logger.info(f"Test set shape: {processed_data['X_test'].shape}")
+
+    logger.info("\n=== Date Range ===")
+    logger.info(f"Start date: {processed_data['metadata']['date_range']['start']}")
+    logger.info(f"End date: {processed_data['metadata']['date_range']['end']}")
+
+    # Add feature alignment verification
+    logger.info("\n=== Feature Alignment Verification ===")
+    dummy_data = np.zeros((1, feature_count))
+    dummy_data[:, close_idx] = 1.0
+    logger.info(f"Feature alignment test - Close position: {close_idx}")
+    logger.info(f"Inverse transform test shape: {scaler.inverse_transform(dummy_data).shape}")
 
     # Extract metadata
     metadata = processed_data['metadata']
@@ -512,7 +557,7 @@ def main():
     logger.info("Starting training process...")
     train_losses, val_losses = train_model(
         model, train_loader, val_loader, criterion, optimizer,
-        num_epochs, device, processed_data['scaler'], logger, close_idx, feature_count
+        num_epochs, device, scaler, logger, close_idx, feature_count
     )
 
     logger.info(f"Training completed in {time.time() - start_time:.2f} seconds")

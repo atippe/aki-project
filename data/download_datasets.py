@@ -29,7 +29,8 @@ def download_dataset(dataset_name, target_dir="raw"):
 
 if __name__ == "__main__":
     datasets = [
-        "mczielinski/bitcoin-historical-data",
+        "imranbukhari/comprehensive-btcusd-1m-data",
+        "imranbukhari/comprehensive-ethusd-1m-data",
     ]
 
     for dataset in datasets:
