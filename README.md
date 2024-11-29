@@ -134,3 +134,8 @@ Note: Replace 'X' with the experiment number (1-11). Always process the dataset 
 - Clear documentation and visualization of results are crucial
 - Consistent evaluation metrics are needed across experiments
 
+## Problems and limitations
+
+- Project scope was optimized for the timeframe, focusing on key experiments rather than exhaustive testing
+- CPU-based training required longer computation times, limiting the number of experimental iterations
+

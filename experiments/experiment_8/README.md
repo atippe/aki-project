@@ -9,6 +9,8 @@ New architecture combining:
 - Temporal Convolution Network
 - Enhanced processing pipeline
 
+Added learning rate scheduling with `OneCycleLR` to improve convergence and performance.
+
 ## Conclusion
 
 - The new combined architecture (LSTM + Positional Encoding + Multi-Head Self Attention + GLU + TCN) showed mixed results compared to the previous implementation:
@@ -117,6 +119,7 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(
 ![Sample Predictions](results/btc/sample_predictions.png)
 ![Attention Heatmap](results/btc/attention_heatmap.png)
 [Raw Training Log](results/btc/training.log)
+
 [Model Specifications](results/btc/model_specifications.txt)
 
 ## Results for ETH/USD dataset
@@ -154,4 +157,5 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(
 ![Sample Predictions](results/eth/sample_predictions.png)
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
+
 [Model Specifications](results/eth/model_specifications.txt)

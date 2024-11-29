@@ -77,6 +77,7 @@ LSTM implementation with:
 ![Residuals](results/btc/residuals.png)
 ![Sample Predictions](results/btc/sample_predictions.png)
 [Raw Training Log](results/btc/training.log)
+
 [Model Specifications](results/btc/model_specifications.txt)
 
 ## Results for ETH/USD dataset
@@ -111,4 +112,5 @@ LSTM implementation with:
 ![Residuals](results/eth/residuals.png)
 ![Sample Predictions](results/eth/sample_predictions.png)
 [Raw Training Log](results/eth/training.log)
+
 [Model Specifications](results/eth/model_specifications.txt)

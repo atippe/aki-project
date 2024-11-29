@@ -92,6 +92,7 @@ Advanced LSTM implementation with:
 ![Sample Predictions](results/btc/sample_predictions.png)
 ![Attention Heatmap](results/btc/attention_heatmap.png)
 [Raw Training Log](results/btc/training.log)
+
 [Model Specifications](results/btc/model_specifications.txt)
 
 ## Results for ETH/USD dataset
@@ -136,4 +137,5 @@ Advanced LSTM implementation with:
 ![Sample Predictions](results/eth/sample_predictions.png)
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
+
 [Model Specifications](results/eth/model_specifications.txt)

@@ -95,6 +95,7 @@ The model shows strong tracking of Bitcoin's price movements, particularly in th
 ![Sample Predictions](results/btc/sample_predictions.png)
 ![Attention Heatmap](results/btc/attention_heatmap.png)
 [Raw Training Log](results/btc/training.log)
+
 [Model Specifications](results/btc/model_specifications.txt)
 
 ## Results for ETH/USD dataset
@@ -135,5 +136,6 @@ The model shows strong tracking of Bitcoin's price movements, particularly in th
 ![Sample Predictions](results/eth/sample_predictions.png)
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
+
 [Model Specifications](results/eth/model_specifications.txt)
 
