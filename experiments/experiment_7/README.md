@@ -4,6 +4,18 @@
 
 This experiment uses a custom SSA (Sparrow Search Algorithm) optimizer to improve the performance of the LSTM model. The SSA optimizer implements a nature-inspired optimization algorithm that mimics the foraging behavior of sparrows, with detector and follower agents working together to find optimal solutions. Initial idea from MS-SSA-LSTM methodology presented in ["A Stock Price Prediction Model Based on Investor Sentiment and Optimized Deep Learning"](https://ieeexplore.ieee.org/document/10130578) (IEEE 2023)
 
+## Conclusion
+
+- Both LSTM models demonstrated significantly poor performance with negative R² values (BTC: -1.81, ETH: -4.01), indicating worse than baseline predictions
+- The models severely underperformed for both cryptocurrencies, with high error rates (MAPE: 65.04% for BTC, 47.20% for ETH)
+- Both models showed signs of underfitting, with validation losses remaining consistently high
+- Directional accuracy was near random for both assets (BTC: 51.89%, ETH: 50.91%)
+- The SSA (Sparrow Search Algorithm) optimizer implementation:
+  - Failed to provide meaningful improvements over traditional optimizers
+  - Showed signs of underfitting for both cryptocurrencies
+  - May require significant hyperparameter tuning or architectural modifications
+- *Note: Because of the high computational cost when using the SSA optimizer, only 5 epochs were trained for each model. This may have limited the optimizer's ability to converge to optimal solutions.*
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -126,15 +138,3 @@ Advanced LSTM implementation with:
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
-
-## Conclusion
-
-- Both LSTM models demonstrated significantly poor performance with negative R² values (BTC: -1.81, ETH: -4.01), indicating worse than baseline predictions
-- The models severely underperformed for both cryptocurrencies, with high error rates (MAPE: 65.04% for BTC, 47.20% for ETH)
-- Both models showed signs of underfitting, with validation losses remaining consistently high
-- Directional accuracy was near random for both assets (BTC: 51.89%, ETH: 50.91%)
-- The SSA (Sparrow Search Algorithm) optimizer implementation:
-  - Failed to provide meaningful improvements over traditional optimizers
-  - Showed signs of underfitting for both cryptocurrencies
-  - May require significant hyperparameter tuning or architectural modifications
-- *Note: Because of the high computational cost when using the SSA optimizer, only 5 epochs were trained for each model. This may have limited the optimizer's ability to converge to optimal solutions.*

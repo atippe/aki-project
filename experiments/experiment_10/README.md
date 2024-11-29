@@ -5,6 +5,22 @@
 This experiment adds multi-step prediction to the LSTM architecture from Experiment 9. The goal is to evaluate the model's performance in predicting multiple future timesteps and assess its ability to capture longer-term price trends.
 It predicts 5 future timesteps (5 days ahead) based on the last 60 days of daily data.
 
+## Conclusion
+
+- The models showed significantly different performance between BTC and ETH predictions:
+  - BTC model demonstrated moderate to poor performance with R² ranging from -0.19 to 0.23
+  - ETH model showed exceptional performance with R² ranging from 0.80 to 0.94
+
+- Error rates varied substantially between assets:
+  - BTC showed high error rates with MAPE ranging from 22.56% to 29.79%
+  - ETH achieved remarkably low error rates with MAPE ranging from 4.58% to 7.57%
+
+- The multi-step prediction architecture showed:
+  - Consistently strong performance for ETH across all prediction horizons
+  - Declining accuracy for BTC with longer prediction horizons
+  - Clear disparity in model effectiveness between the two cryptocurrencies
+  - Better performance in shorter prediction horizons (t+1, t+2) compared to longer ones (t+4, t+5)
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -139,19 +155,3 @@ Advanced LSTM implementation with:
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
-
-## Conclusion
-
-- The models showed significantly different performance between BTC and ETH predictions:
-  - BTC model demonstrated moderate to poor performance with R² ranging from -0.19 to 0.23
-  - ETH model showed exceptional performance with R² ranging from 0.80 to 0.94
-
-- Error rates varied substantially between assets:
-  - BTC showed high error rates with MAPE ranging from 22.56% to 29.79%
-  - ETH achieved remarkably low error rates with MAPE ranging from 4.58% to 7.57%
-
-- The multi-step prediction architecture showed:
-  - Consistently strong performance for ETH across all prediction horizons
-  - Declining accuracy for BTC with longer prediction horizons
-  - Clear disparity in model effectiveness between the two cryptocurrencies
-  - Better performance in shorter prediction horizons (t+1, t+2) compared to longer ones (t+4, t+5)

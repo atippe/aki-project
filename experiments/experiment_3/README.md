@@ -3,6 +3,13 @@
 ## Overview
 This experiment presents an enhanced LSTM model implementation with improved code structure, comprehensive logging, and expanded datasets. A key improvement is the proper train/validation/test split for more robust evaluation. 
 
+## Conclusion
+
+- The LSTM model showed significantly better performance for ETH/USD (R² = 0.99) compared to BTC/USD (R² = 0.77)
+- ETH predictions were more accurate with lower relative errors (MAPE: 2.09% vs 10.67% for BTC)
+- ETH typically trades in a narrower absolute price range compared to BTC, which may have contributed to the model's better performance
+- Both models demonstrated strong capabilities in tracking general price trends, but struggled with extreme price movements
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -105,10 +112,3 @@ LSTM implementation with:
 ![Sample Predictions](results/eth/sample_predictions.png)
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
-
-## Conclusion
-
-- The LSTM model showed significantly better performance for ETH/USD (R² = 0.99) compared to BTC/USD (R² = 0.77)
-- ETH predictions were more accurate with lower relative errors (MAPE: 2.09% vs 10.67% for BTC)
-- ETH typically trades in a narrower absolute price range compared to BTC, which may have contributed to the model's better performance
-- Both models demonstrated strong capabilities in tracking general price trends, but struggled with extreme price movements

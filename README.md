@@ -37,26 +37,26 @@ Note: Replace 'X' with the experiment number (1-11). Always process the dataset 
 
 ## Experiments
 
-### Experiment 1: Initial LSTM test
+### [Experiment 1: Initial LSTM test](experiments/experiment_1/README.md)
 - First try at using LSTM for Bitcoin price prediction
 - Very basic setup with many mistakes
 - Main issue: data leakage due to wrong scaling order
 - Good learning experience but not reliable results
 
-### Experiment 2: Basic fixes
+### [Experiment 2: Basic fixes](experiments/experiment_2/README.md)
 - Fixed the main data leakage problem from Experiment 1
 - Cleaned up the code structure
 - Still basic but now methodologically correct
 - Same simple LSTM model as before
 
-### Experiment 3: Comprehensive improvements
+### [Experiment 3: Comprehensive improvements](experiments/experiment_3/README.md)
 - Added more data (ETH/USD alongside BTC/USD)
 - Better organization of code and data handling
 - Added proper logging to track results
 - Better plots to understand what's happening
 - Proper split into train/validation/test sets
 
-### Experiment 4: Enhanced LSTM
+### [Experiment 4: Enhanced LSTM](experiments/experiment_4/README.md)
 - Added several improvements to make the LSTM stronger:
   - Attention mechanism to focus on important parts
   - Multiple LSTM layers for deeper learning
@@ -65,25 +65,25 @@ Note: Replace 'X' with the experiment number (1-11). Always process the dataset 
   - Better weight initialization
 - More complex but potentially more powerful
 
-### Experiment 5: RobustScaler implementation
+### [Experiment 5: RobustScaler implementation](experiments/experiment_5/README.md)
 - Same model as Experiment 4
 - Changed to RobustScaler instead of MinMaxScaler
 - Goal: Handle extreme price movements better
 - Testing if different scaling helps with predictions
 
-### Experiment 6: StandardScaler and Log Transform
+### [Experiment 6: StandardScaler and Log Transform](experiments/experiment_6/README.md)
 - Tried another scaling approach with StandardScaler
 - Added log transformation for price data
 - Kept the same LSTM structure
 - Looking for better ways to handle price variations
 
-### Experiment 7: SSA Optimizer test
+### [Experiment 7: SSA Optimizer test](experiments/experiment_7/README.md)
 - Tried a new optimization method (SSA) instead of Adam
 - Based on recent research paper
 - Didn't work well: slow and poor results
 - Decided not to continue with this approach
 
-### Experiment 8: Advanced architecture
+### [Experiment 8: Advanced architecture](experiments/experiment_8/README.md)
 - Built a more modern version with new features:
   - Position encoding to handle time better
   - Self-attention to spot patterns
@@ -91,19 +91,19 @@ Note: Replace 'X' with the experiment number (1-11). Always process the dataset 
   - Better data processing
 - Most complex version so far
 
-### Experiment 9: RobustScaler retest
+### [Experiment 9: RobustScaler retest](experiments/experiment_9/README.md)
 - Used the complex model from Experiment 8
 - Tried RobustScaler again to handle outliers
 - Results weren't great
 - Showed that more complex isn't always better
 
-### Experiment 10: Multi-step Prediction Test
+### [Experiment 10: Multi-step prediction test](experiments/experiment_10/README.md)
 - First try at predicting multiple days ahead
 - Used the complex model from Experiment 8
 - Tried to predict 5 days into the future
 - Results weren't satisfactory
 
-### Experiment 11: Refined Multi-step Prediction
+### [Experiment 11: Refined multi-step prediction](experiments/experiment_11/README.md)
 - Went back to simpler model from Experiment 6
 - Kept the multi-day prediction (5 days ahead)
 - Used StandardScaler and simpler LSTM

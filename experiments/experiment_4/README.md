@@ -11,6 +11,15 @@ Advanced LSTM architecture incorporating:
 - Dropout Implementation
 - Advanced Prediction Head
 
+## Conclusion
+
+- The LSTM model demonstrated superior performance for ETH/USD (R² = 0.95) compared to BTC/USD (R² = 0.88)
+- ETH predictions achieved higher accuracy with lower relative errors (MAPE: 3.41% vs 9.85% for BTC)
+- The model showed better stability in tracking ETH prices, possibly due to ETH's relatively lower price volatility
+- The attention mechanism appeared more effective for ETH predictions, suggesting better pattern recognition in ETH price movements
+- Maximum prediction deviations were proportionally smaller for ETH ($500.74) compared to BTC ($22,538.98)
+- Training convergence was achieved faster and more steadily for the ETH model
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -128,10 +137,3 @@ The model shows strong tracking of Bitcoin's price movements, particularly in th
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
 
-## Conclusion
-
-- RobustScaler demonstrated mixed results compared to previous scaling methods, with better handling of outliers but slightly lower overall accuracy (R² = 0.98 for BTC/USD)
-- The BTC/USD model showed good resilience to price volatility with a MAPE of 4.34%, though this is higher than previous experiments using different scalers
-- RobustScaler's strength in handling outliers was evident in more stable predictions during extreme market movements, particularly for ETH/USD predictions
-- The ETH/USD model achieved impressive accuracy with a MAPE of 2.75% and R² of 0.97, suggesting RobustScaler might be more suitable for lower-value cryptocurrencies
-- While RobustScaler helped reduce the impact of extreme outliers, the lower directional accuracy (46.76% for BTC and 48.56% for ETH) suggests it might be smoothing out important price signals

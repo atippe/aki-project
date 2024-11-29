@@ -4,6 +4,13 @@
 
 Same architecture as Experiment 5, but it now uses StandardScaler with Log Transformation for data normalization. This experiment aims to evaluate the impact of these normalization techniques compared to the RobustScaler used in the previous experiment.
 
+## Conclusion
+
+- The StandardScaler with Log Transformation demonstrates superior performance compared to RobustScaler, achieving an exceptional R² = 0.99 for BTC/USD (up from 0.98) and maintaining a strong R² = 0.94 for ETH/USD
+- BTC/USD predictions show remarkable improvement with a MAPE of 2.79%, compared to the previous 4.34% using RobustScaler, indicating significantly enhanced accuracy
+- The Maximum Absolute Error for ETH/USD increased slightly to $734.41 (from $639.96), suggesting some trade-offs in extreme value handling
+- While RobustScaler showed better stability in training/validation loss convergence, the StandardScaler with Log Transformation achieved better overall accuracy metrics
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -116,10 +123,3 @@ Advanced LSTM implementation with:
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
-
-## Conclusion
-
-- The StandardScaler with Log Transformation demonstrates superior performance compared to RobustScaler, achieving an exceptional R² = 0.99 for BTC/USD (up from 0.98) and maintaining a strong R² = 0.94 for ETH/USD
-- BTC/USD predictions show remarkable improvement with a MAPE of 2.79%, compared to the previous 4.34% using RobustScaler, indicating significantly enhanced accuracy
-- The Maximum Absolute Error for ETH/USD increased slightly to $734.41 (from $639.96), suggesting some trade-offs in extreme value handling
-- While RobustScaler showed better stability in training/validation loss convergence, the StandardScaler with Log Transformation achieved better overall accuracy metrics

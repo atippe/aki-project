@@ -4,6 +4,17 @@
 
 This experiment uses the same multi-step prediction approach as Experiment 10 but reverts to the LSTM architecture from Experiment 6. The focus is on refining the multi-step prediction model to improve performance and better capture longer-term price trends. The model predicts 5 future timesteps (5 days ahead) based on the last 60 days of daily data.
 
+## Conclusion
+
+- The architecture from experiment 6 demonstrated strong performance for both BTC/USD and ETH/USD predictions, showing significant improvements over the previous experiment 10
+- BTC/USD predictions achieved exceptional accuracy with R² scores ranging from 0.87 to 0.99 and low MAPE values (2.17% for t+1), indicating robust short-term forecasting capability
+- ETH/USD predictions also showed strong performance with R² scores between 0.77 and 0.95, and reasonable MAPE values (3.94% for t+1)
+- Both models exhibited expected degradation in accuracy with longer prediction horizons, but maintained acceptable performance even at t+5
+- The training process showed good stability for both assets, with consistent loss reduction and proper convergence
+- The architectural changes proved beneficial, particularly for BTC/USD predictions which showed marked improvement in handling high price ranges
+- The architecture appears more suitable for both high-value (BTC) and moderate-value (ETH) cryptocurrencies, demonstrating better scalability than previous implementations
+- The results validate the decision to revert the architecture, showing it can handle different price scales and volatility patterns effectively
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -143,14 +154,3 @@ Advanced LSTM implementation with:
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
-
-## Conclusion
-
-- The architecture from experiment 6 demonstrated strong performance for both BTC/USD and ETH/USD predictions, showing significant improvements over the previous experiment 10
-- BTC/USD predictions achieved exceptional accuracy with R² scores ranging from 0.87 to 0.99 and low MAPE values (2.17% for t+1), indicating robust short-term forecasting capability
-- ETH/USD predictions also showed strong performance with R² scores between 0.77 and 0.95, and reasonable MAPE values (3.94% for t+1)
-- Both models exhibited expected degradation in accuracy with longer prediction horizons, but maintained acceptable performance even at t+5
-- The training process showed good stability for both assets, with consistent loss reduction and proper convergence
-- The architectural changes proved beneficial, particularly for BTC/USD predictions which showed marked improvement in handling high price ranges
-- The architecture appears more suitable for both high-value (BTC) and moderate-value (ETH) cryptocurrencies, demonstrating better scalability than previous implementations
-- The results validate the decision to revert the architecture, showing it can handle different price scales and volatility patterns effectively

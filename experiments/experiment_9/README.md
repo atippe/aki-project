@@ -4,6 +4,15 @@
 
 Same architecture as Experiment 8, but it now uses RobustScaler for data normalization. This experiment aims to improve the model's performance by addressing potential issues with data scaling and normalization.
 
+## Conclusion
+
+- The RobustScaler implementation showed mixed results, with significantly better performance for ETH/USD compared to BTC/USD predictions
+- ETH/USD predictions demonstrated excellent accuracy with R² = 0.98 and MAPE of 2.31%, showing consistent performance with previous scaling methods
+- BTC/USD predictions deteriorated significantly with R² = -1.87 and MAPE of 47.19%, indicating RobustScaler may not be suitable for assets with extreme price ranges
+- The RobustScaler appears more effective for cryptocurrencies with moderate price ranges like ETH, but struggles with BTC's wider price variations
+- Training and validation loss patterns suggest better stability in the ETH model compared to BTC, though there's room for optimization
+- The experiment indicates that RobustScaler may not be the optimal choice for high-value cryptocurrencies like Bitcoin, suggesting a need to explore alternative scaling methods
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -128,12 +137,3 @@ Advanced LSTM implementation with:
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
-
-## Conclusion
-
-- The RobustScaler implementation showed mixed results, with significantly better performance for ETH/USD compared to BTC/USD predictions
-- ETH/USD predictions demonstrated excellent accuracy with R² = 0.98 and MAPE of 2.31%, showing consistent performance with previous scaling methods
-- BTC/USD predictions deteriorated significantly with R² = -1.87 and MAPE of 47.19%, indicating RobustScaler may not be suitable for assets with extreme price ranges
-- The RobustScaler appears more effective for cryptocurrencies with moderate price ranges like ETH, but struggles with BTC's wider price variations
-- Training and validation loss patterns suggest better stability in the ETH model compared to BTC, though there's room for optimization
-- The experiment indicates that RobustScaler may not be the optimal choice for high-value cryptocurrencies like Bitcoin, suggesting a need to explore alternative scaling methods

@@ -9,6 +9,22 @@ New architecture combining:
 - Temporal Convolution Network
 - Enhanced processing pipeline
 
+## Conclusion
+
+- The new combined architecture (LSTM + Positional Encoding + Multi-Head Self Attention + GLU + TCN) showed mixed results compared to the previous implementation:
+  - For BTC/USD, performance significantly declined with R² dropping from 0.99 to 0.17 and MAPE increasing from 2.79% to 23.07%
+  - For ETH/USD, performance improved with R² increasing from 0.94 to 0.97 and MAPE decreasing from 4.01% to 2.94%
+
+- The architectural changes appear to have:
+  - Enhanced ETH/USD prediction stability and accuracy
+  - Significantly degraded BTC/USD prediction capabilities, particularly in higher price ranges
+  - Introduced more pronounced lag in capturing rapid price movements for BTC
+  - Improved the model's ability to handle ETH's relatively lower price volatility
+  - The combination of advanced components seems better suited for mid-range price predictions (ETH) rather than high-value assets (BTC)
+  - The increased complexity might be causing overfitting in the BTC model despite the higher dropout rate
+  - The OneCycleLR scheduling shows promise but may need further tuning
+  - The increased model capacity (hidden size 256, 3 layers) might require additional optimization for BTC predictions
+
 ## Dataset
 - Source:
   - [ETH/USD Data](https://www.kaggle.com/datasets/imranbukhari/comprehensive-ethusd-1m-data)
@@ -139,19 +155,3 @@ scheduler = torch.optim.lr_scheduler.OneCycleLR(
 ![Attention Heatmap](results/eth/attention_heatmap.png)
 [Raw Training Log](results/eth/training.log)
 [Model Specifications](results/eth/model_specifications.txt)
-
-## Conclusion
-
-- The new combined architecture (LSTM + Positional Encoding + Multi-Head Self Attention + GLU + TCN) showed mixed results compared to the previous implementation:
-  - For BTC/USD, performance significantly declined with R² dropping from 0.99 to 0.17 and MAPE increasing from 2.79% to 23.07%
-  - For ETH/USD, performance improved with R² increasing from 0.94 to 0.97 and MAPE decreasing from 4.01% to 2.94%
-
-- The architectural changes appear to have:
-  - Enhanced ETH/USD prediction stability and accuracy
-  - Significantly degraded BTC/USD prediction capabilities, particularly in higher price ranges
-  - Introduced more pronounced lag in capturing rapid price movements for BTC
-  - Improved the model's ability to handle ETH's relatively lower price volatility
-  - The combination of advanced components seems better suited for mid-range price predictions (ETH) rather than high-value assets (BTC)
-  - The increased complexity might be causing overfitting in the BTC model despite the higher dropout rate
-  - The OneCycleLR scheduling shows promise but may need further tuning
-  - The increased model capacity (hidden size 256, 3 layers) might require additional optimization for BTC predictions
