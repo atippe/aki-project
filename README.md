@@ -11,7 +11,7 @@ This project explores deep learning techniques for cryptocurrency price predicti
 ## Usage
 1. Clone the repository:
    ```bash
-   git clone https://github.com/MaximilianPowers/Thesis
+   git clone https://github.com/atippe/aki-project/tree/main
    ```
 
 2. Set up data:
