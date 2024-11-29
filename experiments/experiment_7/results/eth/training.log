@@ -1,0 +1,759 @@
+=== Starting new training run ===
+Crypto Currency: eth
+
+Model Parameters:
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.2
+  num_epochs: 5
+  batch_size: 32
+  device: cpu
+  criterion: MSE
+  pop_size: 50
+  a: 0.8
+  ST: 0.6
+  diversity_weight: 0.1
+  momentum: 0.1
+Loading pre-processed data...
+
+=== Dataset Configuration ===
+Sequence length: 60
+Feature count: 5
+Feature indices: {'Volume': 0, 'Open': 1, 'High': 2, 'Low': 3, 'Close': 4}
+Close price index: 4
+
+=== Data Shapes ===
+Training set shape: torch.Size([2007, 60, 5])
+Validation set shape: torch.Size([383, 60, 5])
+Test set shape: torch.Size([384, 60, 5])
+
+=== Date Range ===
+Start date: 2016-09-29
+End date: 2024-10-30
+
+=== Feature Alignment Verification ===
+Feature alignment test - Close position: 4
+Inverse transform test shape: (1, 5)
+Model input size: 5
+
+Initial model parameters:
+lstm.lstm_cells.0.layer_norm_1.weight:
+  Shape: torch.Size([128])
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+lstm.lstm_cells.0.layer_norm_1.bias:
+  Shape: torch.Size([128])
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+lstm.lstm_cells.0.layer_norm_2.weight:
+  Shape: torch.Size([128])
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+lstm.lstm_cells.0.layer_norm_2.bias:
+  Shape: torch.Size([128])
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+lstm.lstm_cells.0.gates.weight:
+  Shape: torch.Size([512, 133])
+  Mean: 0.000189
+  Std: 0.055639
+  Min: -0.096438
+  Max: 0.096444
+lstm.lstm_cells.0.gates.bias:
+  Shape: torch.Size([512])
+  Mean: 0.000705
+  Std: 0.049467
+  Min: -0.086236
+  Max: 0.086680
+lstm.lstm_cells.0.residual_proj.weight:
+  Shape: torch.Size([128, 5])
+  Mean: 0.002176
+  Std: 0.257926
+  Min: -0.445882
+  Max: 0.439372
+lstm.lstm_cells.0.residual_proj.bias:
+  Shape: torch.Size([128])
+  Mean: 0.016324
+  Std: 0.242547
+  Min: -0.443071
+  Max: 0.445095
+lstm.lstm_cells.1.layer_norm_1.weight:
+  Shape: torch.Size([128])
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+lstm.lstm_cells.1.layer_norm_1.bias:
+  Shape: torch.Size([128])
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+lstm.lstm_cells.1.layer_norm_2.weight:
+  Shape: torch.Size([128])
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+lstm.lstm_cells.1.layer_norm_2.bias:
+  Shape: torch.Size([128])
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+lstm.lstm_cells.1.gates.weight:
+  Shape: torch.Size([512, 256])
+  Mean: -0.000032
+  Std: 0.050995
+  Min: -0.088387
+  Max: 0.088384
+lstm.lstm_cells.1.gates.bias:
+  Shape: torch.Size([512])
+  Mean: -0.000971
+  Std: 0.034464
+  Min: -0.062473
+  Max: 0.062258
+lstm.attention.attention.0.weight:
+  Shape: torch.Size([128, 128])
+  Mean: 0.000210
+  Std: 0.051000
+  Min: -0.088388
+  Max: 0.088383
+lstm.attention.attention.0.bias:
+  Shape: torch.Size([128])
+  Mean: 0.005084
+  Std: 0.051186
+  Min: -0.085672
+  Max: 0.085523
+lstm.attention.attention.2.weight:
+  Shape: torch.Size([1, 128])
+  Mean: -0.001462
+  Std: 0.048220
+  Min: -0.081822
+  Max: 0.083576
+lstm.attention.attention.2.bias:
+  Shape: torch.Size([1])
+  Mean: 0.006262
+  Std: nan
+  Min: 0.006262
+  Max: 0.006262
+lstm.skip_connections.0.weight:
+  Shape: torch.Size([128, 5])
+  Mean: -0.004543
+  Std: 0.258070
+  Min: -0.444951
+  Max: 0.444504
+lstm.skip_connections.0.bias:
+  Shape: torch.Size([128])
+  Mean: 0.021243
+  Std: 0.266574
+  Min: -0.443664
+  Max: 0.445399
+lstm.skip_connections.1.weight:
+  Shape: torch.Size([128, 5])
+  Mean: -0.004786
+  Std: 0.251894
+  Min: -0.446934
+  Max: 0.446745
+lstm.skip_connections.1.bias:
+  Shape: torch.Size([128])
+  Mean: 0.002372
+  Std: 0.250079
+  Min: -0.433890
+  Max: 0.439161
+prediction_head.0.weight:
+  Shape: torch.Size([64, 128])
+  Mean: -0.000528
+  Std: 0.050734
+  Min: -0.088360
+  Max: 0.088381
+prediction_head.0.bias:
+  Shape: torch.Size([64])
+  Mean: 0.003204
+  Std: 0.051393
+  Min: -0.077404
+  Max: 0.086960
+prediction_head.3.weight:
+  Shape: torch.Size([1, 64])
+  Mean: -0.012709
+  Std: 0.070504
+  Min: -0.117533
+  Max: 0.117175
+prediction_head.3.bias:
+  Shape: torch.Size([1])
+  Mean: 0.058199
+  Std: nan
+  Min: 0.058199
+  Max: 0.058199
+Starting training process...
+Starting training process
+Model architecture:
+AdvancedPricePredictionModel(
+  (lstm): EnhancedLSTM(
+    (lstm_cells): ModuleList(
+      (0): CustomLSTMCell(
+        (dropout): Dropout(p=0.2, inplace=False)
+        (layer_norm_1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (layer_norm_2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (gates): Linear(in_features=133, out_features=512, bias=True)
+        (residual_proj): Linear(in_features=5, out_features=128, bias=True)
+      )
+      (1): CustomLSTMCell(
+        (dropout): Dropout(p=0.2, inplace=False)
+        (layer_norm_1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (layer_norm_2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (gates): Linear(in_features=256, out_features=512, bias=True)
+      )
+    )
+    (attention): AttentionLayer(
+      (attention): Sequential(
+        (0): Linear(in_features=128, out_features=128, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=128, out_features=1, bias=True)
+      )
+    )
+    (skip_connections): ModuleList(
+      (0-1): 2 x Linear(in_features=5, out_features=128, bias=True)
+    )
+  )
+  (prediction_head): Sequential(
+    (0): Linear(in_features=128, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+Training parameters: epochs=5, device=cpu
+Optimizer: SSAOptimizer(pop_size=50, a=0.8, ST=0.6, diversity_weight=0.1, momentum=0.1)
+Loss function: MSELoss()
+Training batches: 63
+Validation batches: 12
+
+Starting Epoch [1/5]
+
+First batch details:
+Scaled predictions (first 3):
+[[-0.03748095]
+ [-0.12463309]
+ [-0.405652  ]]
+Scaled targets (first 3):
+[-0.08306571 -0.10827032  2.4842992 ]
+Price predictions (first 3):
+[261.90527228 179.88143251 -84.60145325]
+Price targets (first 3):
+[ 219.00285852  195.28136134 2635.29614354]
+Initial normalized MSE: 3.121829
+Initial price-scale MSE: 2765242.68
+Epoch [1/5] Summary:
+  Normalized - Train MSE: 2.482956, RMSE: 1.575740
+  Normalized - Val MSE: 3.328798, RMSE: 1.824499
+  Price Scale - Train MSE: 2199343.35, RMSE: $1483.02
+  Price Scale - Val MSE: 2948570.53, RMSE: $1717.14
+
+Starting Epoch [2/5]
+Epoch [2/5] Summary:
+  Normalized - Train MSE: 2.459014, RMSE: 1.568124
+  Normalized - Val MSE: 3.328798, RMSE: 1.824499
+  Price Scale - Train MSE: 2178136.72, RMSE: $1475.85
+  Price Scale - Val MSE: 2948570.53, RMSE: $1717.14
+
+Starting Epoch [3/5]
+Epoch [3/5] Summary:
+  Normalized - Train MSE: 2.499369, RMSE: 1.580939
+  Normalized - Val MSE: 3.328798, RMSE: 1.824499
+  Price Scale - Train MSE: 2213881.79, RMSE: $1487.91
+  Price Scale - Val MSE: 2948570.53, RMSE: $1717.14
+
+Starting Epoch [4/5]
+Epoch [4/5] Summary:
+  Normalized - Train MSE: 2.370588, RMSE: 1.539671
+  Normalized - Val MSE: 3.328798, RMSE: 1.824499
+  Price Scale - Train MSE: 2099810.96, RMSE: $1449.07
+  Price Scale - Val MSE: 2948570.53, RMSE: $1717.14
+
+Starting Epoch [5/5]
+
+Attention Pattern Sample (Epoch 5):
+Average attention weights: [[0.03566782]
+ [0.0159009 ]
+ [0.02034385]
+ [0.02050783]
+ [0.02358118]]
+Epoch [5/5] Summary:
+  Normalized - Train MSE: 2.465157, RMSE: 1.570082
+  Normalized - Val MSE: 3.328798, RMSE: 1.824499
+  Price Scale - Train MSE: 2183577.61, RMSE: $1477.69
+  Price Scale - Val MSE: 2948570.53, RMSE: $1717.14
+
+Final model parameters and changes:
+
+lstm.lstm_cells.0.layer_norm_1.weight:
+Initial stats:
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+Final stats:
+  Mean: 0.915097
+  Std: 0.107603
+  Min: 0.385499
+  Max: 1.000000
+Changes:
+  Mean change: -0.084903
+  Std change: 0.107603
+  Min change: -0.614501
+  Max change: 0.000000
+
+lstm.lstm_cells.0.layer_norm_1.bias:
+Initial stats:
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+Final stats:
+  Mean: -0.003458
+  Std: 0.178445
+  Min: -0.611433
+  Max: 0.390617
+Changes:
+  Mean change: -0.003458
+  Std change: 0.178445
+  Min change: -0.611433
+  Max change: 0.390617
+
+lstm.lstm_cells.0.layer_norm_2.weight:
+Initial stats:
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+Final stats:
+  Mean: 0.925198
+  Std: 0.098910
+  Min: 0.467254
+  Max: 1.000000
+Changes:
+  Mean change: -0.074802
+  Std change: 0.098910
+  Min change: -0.532746
+  Max change: 0.000000
+
+lstm.lstm_cells.0.layer_norm_2.bias:
+Initial stats:
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+Final stats:
+  Mean: 0.013755
+  Std: 0.202184
+  Min: -0.554675
+  Max: 0.584259
+Changes:
+  Mean change: 0.013755
+  Std change: 0.202184
+  Min change: -0.554675
+  Max change: 0.584259
+
+lstm.lstm_cells.0.gates.weight:
+Initial stats:
+  Mean: 0.000189
+  Std: 0.055639
+  Min: -0.096438
+  Max: 0.096444
+Final stats:
+  Mean: 0.000517
+  Std: 0.197701
+  Min: -1.000000
+  Max: 1.000000
+Changes:
+  Mean change: 0.000328
+  Std change: 0.142062
+  Min change: -0.903562
+  Max change: 0.903556
+
+lstm.lstm_cells.0.gates.bias:
+Initial stats:
+  Mean: 0.000705
+  Std: 0.049467
+  Min: -0.086236
+  Max: 0.086680
+Final stats:
+  Mean: 0.007173
+  Std: 0.185841
+  Min: -0.594764
+  Max: 0.708062
+Changes:
+  Mean change: 0.006469
+  Std change: 0.136374
+  Min change: -0.508528
+  Max change: 0.621382
+
+lstm.lstm_cells.0.residual_proj.weight:
+Initial stats:
+  Mean: 0.002176
+  Std: 0.257926
+  Min: -0.445882
+  Max: 0.439372
+Final stats:
+  Mean: -0.004102
+  Std: 0.327971
+  Min: -0.944075
+  Max: 0.795603
+Changes:
+  Mean change: -0.006278
+  Std change: 0.070045
+  Min change: -0.498193
+  Max change: 0.356231
+
+lstm.lstm_cells.0.residual_proj.bias:
+Initial stats:
+  Mean: 0.016324
+  Std: 0.242547
+  Min: -0.443071
+  Max: 0.445095
+Final stats:
+  Mean: 0.012955
+  Std: 0.292341
+  Min: -0.910388
+  Max: 0.640249
+Changes:
+  Mean change: -0.003370
+  Std change: 0.049794
+  Min change: -0.467317
+  Max change: 0.195154
+
+lstm.lstm_cells.1.layer_norm_1.weight:
+Initial stats:
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+Final stats:
+  Mean: 0.917082
+  Std: 0.103912
+  Min: 0.611176
+  Max: 1.000000
+Changes:
+  Mean change: -0.082918
+  Std change: 0.103912
+  Min change: -0.388824
+  Max change: 0.000000
+
+lstm.lstm_cells.1.layer_norm_1.bias:
+Initial stats:
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+Final stats:
+  Mean: 0.006287
+  Std: 0.186333
+  Min: -0.601225
+  Max: 0.408572
+Changes:
+  Mean change: 0.006287
+  Std change: 0.186333
+  Min change: -0.601225
+  Max change: 0.408572
+
+lstm.lstm_cells.1.layer_norm_2.weight:
+Initial stats:
+  Mean: 1.000000
+  Std: 0.000000
+  Min: 1.000000
+  Max: 1.000000
+Final stats:
+  Mean: 0.936335
+  Std: 0.090039
+  Min: 0.473368
+  Max: 1.000000
+Changes:
+  Mean change: -0.063665
+  Std change: 0.090039
+  Min change: -0.526632
+  Max change: 0.000000
+
+lstm.lstm_cells.1.layer_norm_2.bias:
+Initial stats:
+  Mean: 0.000000
+  Std: 0.000000
+  Min: 0.000000
+  Max: 0.000000
+Final stats:
+  Mean: 0.016324
+  Std: 0.215616
+  Min: -0.495170
+  Max: 0.756299
+Changes:
+  Mean change: 0.016324
+  Std change: 0.215616
+  Min change: -0.495170
+  Max change: 0.756299
+
+lstm.lstm_cells.1.gates.weight:
+Initial stats:
+  Mean: -0.000032
+  Std: 0.050995
+  Min: -0.088387
+  Max: 0.088384
+Final stats:
+  Mean: 0.000634
+  Std: 0.196695
+  Min: -0.963231
+  Max: 0.939004
+Changes:
+  Mean change: 0.000666
+  Std change: 0.145699
+  Min change: -0.874844
+  Max change: 0.850620
+
+lstm.lstm_cells.1.gates.bias:
+Initial stats:
+  Mean: -0.000971
+  Std: 0.034464
+  Min: -0.062473
+  Max: 0.062258
+Final stats:
+  Mean: 0.003053
+  Std: 0.188478
+  Min: -0.748470
+  Max: 0.601997
+Changes:
+  Mean change: 0.004024
+  Std change: 0.154015
+  Min change: -0.685997
+  Max change: 0.539739
+
+lstm.attention.attention.0.weight:
+Initial stats:
+  Mean: 0.000210
+  Std: 0.051000
+  Min: -0.088388
+  Max: 0.088383
+Final stats:
+  Mean: -0.001595
+  Std: 0.197393
+  Min: -0.792338
+  Max: 1.000000
+Changes:
+  Mean change: -0.001804
+  Std change: 0.146392
+  Min change: -0.703949
+  Max change: 0.911617
+
+lstm.attention.attention.0.bias:
+Initial stats:
+  Mean: 0.005084
+  Std: 0.051186
+  Min: -0.085672
+  Max: 0.085523
+Final stats:
+  Mean: 0.025674
+  Std: 0.178744
+  Min: -0.442255
+  Max: 0.678923
+Changes:
+  Mean change: 0.020591
+  Std change: 0.127558
+  Min change: -0.356583
+  Max change: 0.593400
+
+lstm.attention.attention.2.weight:
+Initial stats:
+  Mean: -0.001462
+  Std: 0.048220
+  Min: -0.081822
+  Max: 0.083576
+Final stats:
+  Mean: -0.003222
+  Std: 0.179713
+  Min: -0.469853
+  Max: 0.619210
+Changes:
+  Mean change: -0.001759
+  Std change: 0.131492
+  Min change: -0.388030
+  Max change: 0.535634
+
+lstm.attention.attention.2.bias:
+Initial stats:
+  Mean: 0.006262
+  Std: nan
+  Min: 0.006262
+  Max: 0.006262
+Final stats:
+  Mean: 0.316591
+  Std: nan
+  Min: 0.316591
+  Max: 0.316591
+Changes:
+  Mean change: 0.310329
+  Std change: nan
+  Min change: 0.310329
+  Max change: 0.310329
+
+lstm.skip_connections.0.weight:
+Initial stats:
+  Mean: -0.004543
+  Std: 0.258070
+  Min: -0.444951
+  Max: 0.444504
+Final stats:
+  Mean: -0.020873
+  Std: 0.320246
+  Min: -1.000000
+  Max: 0.799140
+Changes:
+  Mean change: -0.016331
+  Std change: 0.062175
+  Min change: -0.555049
+  Max change: 0.354635
+
+lstm.skip_connections.0.bias:
+Initial stats:
+  Mean: 0.021243
+  Std: 0.266574
+  Min: -0.443664
+  Max: 0.445399
+Final stats:
+  Mean: 0.017716
+  Std: 0.312652
+  Min: -0.613456
+  Max: 0.783985
+Changes:
+  Mean change: -0.003527
+  Std change: 0.046078
+  Min change: -0.169792
+  Max change: 0.338586
+
+lstm.skip_connections.1.weight:
+Initial stats:
+  Mean: -0.004786
+  Std: 0.251894
+  Min: -0.446934
+  Max: 0.446745
+Final stats:
+  Mean: -0.008405
+  Std: 0.319075
+  Min: -0.863020
+  Max: 1.000000
+Changes:
+  Mean change: -0.003618
+  Std change: 0.067180
+  Min change: -0.416085
+  Max change: 0.553255
+
+lstm.skip_connections.1.bias:
+Initial stats:
+  Mean: 0.002372
+  Std: 0.250079
+  Min: -0.433890
+  Max: 0.439161
+Final stats:
+  Mean: 0.024483
+  Std: 0.304328
+  Min: -0.539478
+  Max: 0.936658
+Changes:
+  Mean change: 0.022111
+  Std change: 0.054248
+  Min change: -0.105588
+  Max change: 0.497497
+
+prediction_head.0.weight:
+Initial stats:
+  Mean: -0.000528
+  Std: 0.050734
+  Min: -0.088360
+  Max: 0.088381
+Final stats:
+  Mean: -0.004362
+  Std: 0.196662
+  Min: -0.744539
+  Max: 0.878017
+Changes:
+  Mean change: -0.003834
+  Std change: 0.145927
+  Min change: -0.656179
+  Max change: 0.789636
+
+prediction_head.0.bias:
+Initial stats:
+  Mean: 0.003204
+  Std: 0.051393
+  Min: -0.077404
+  Max: 0.086960
+Final stats:
+  Mean: -0.001250
+  Std: 0.175281
+  Min: -0.443958
+  Max: 0.446837
+Changes:
+  Mean change: -0.004454
+  Std change: 0.123888
+  Min change: -0.366553
+  Max change: 0.359877
+
+prediction_head.3.weight:
+Initial stats:
+  Mean: -0.012709
+  Std: 0.070504
+  Min: -0.117533
+  Max: 0.117175
+Final stats:
+  Mean: -0.015831
+  Std: 0.184405
+  Min: -0.468200
+  Max: 0.381576
+Changes:
+  Mean change: -0.003122
+  Std change: 0.113901
+  Min change: -0.350667
+  Max change: 0.264400
+
+prediction_head.3.bias:
+Initial stats:
+  Mean: 0.058199
+  Std: nan
+  Min: 0.058199
+  Max: 0.058199
+Final stats:
+  Mean: 0.033221
+  Std: nan
+  Min: 0.033221
+  Max: 0.033221
+Changes:
+  Mean change: -0.024978
+  Std change: nan
+  Min change: -0.024978
+  Max change: -0.024978
+Training completed in 937.18 seconds
+Saving model and results...
+Starting evaluation process...
+Generating predictions...
+Creating visualizations...
+Training history plot saved
+Prediction analysis plots saved
+Metrics and sample predictions tables saved
+Error distribution and time series plots saved
+Creating attention visualizations...
+Attention visualization plots saved
+Evaluation metrics (for test set):
+  Mean Squared Error ($): 1808435.14
+  Root Mean Squared Error ($): 1344.78
+  Mean Absolute Error ($): 1251.35
+  Mean Absolute Percentage Error (%): 47.20
+  Weighted MAPE (%): 45.01
+  Directional Accuracy (%): 50.91
+  Maximum Absolute Error ($): 2354.38
+  Mean Percentage Error (%): 47.20
+  R² Score: -4.01

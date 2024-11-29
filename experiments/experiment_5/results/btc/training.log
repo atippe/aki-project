@@ -1,0 +1,546 @@
+=== Starting new training run ===
+Crypto Currency: btc
+
+Model Parameters:
+  hidden_size: 128
+  num_layers: 2
+  dropout: 0.2
+  num_epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  device: cpu
+  weight_decay: 1e-05
+  betas: (0.9, 0.999)
+  eps: 1e-08
+  criterion: MSE
+Loading pre-processed data...
+
+=== Dataset Configuration ===
+Sequence length: 60
+Feature count: 5
+Feature indices: {'Volume': 0, 'Open': 1, 'High': 2, 'Low': 3, 'Close': 4}
+Close price index: 4
+
+=== Data Shapes ===
+Training set shape: torch.Size([3316, 60, 5])
+Validation set shape: torch.Size([663, 60, 5])
+Test set shape: torch.Size([664, 60, 5])
+
+=== Date Range ===
+Start date: 2011-08-18
+End date: 2024-10-30
+
+=== Feature Alignment Verification ===
+Feature alignment test - Close position: 4
+Inverse transform test shape: (1, 5)
+Model input size: 5
+Starting training process...
+Starting training process
+Model architecture:
+AdvancedPricePredictionModel(
+  (lstm): EnhancedLSTM(
+    (lstm_cells): ModuleList(
+      (0): CustomLSTMCell(
+        (dropout): Dropout(p=0.2, inplace=False)
+        (layer_norm_1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (layer_norm_2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (gates): Linear(in_features=133, out_features=512, bias=True)
+        (residual_proj): Linear(in_features=5, out_features=128, bias=True)
+      )
+      (1): CustomLSTMCell(
+        (dropout): Dropout(p=0.2, inplace=False)
+        (layer_norm_1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (layer_norm_2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (gates): Linear(in_features=256, out_features=512, bias=True)
+      )
+    )
+    (attention): AttentionLayer(
+      (attention): Sequential(
+        (0): Linear(in_features=128, out_features=128, bias=True)
+        (1): Tanh()
+        (2): Linear(in_features=128, out_features=1, bias=True)
+      )
+    )
+    (skip_connections): ModuleList(
+      (0-1): 2 x Linear(in_features=5, out_features=128, bias=True)
+    )
+  )
+  (prediction_head): Sequential(
+    (0): Linear(in_features=128, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Dropout(p=0.2, inplace=False)
+    (3): Linear(in_features=64, out_features=1, bias=True)
+  )
+)
+Training parameters: epochs=50, device=cpu
+Optimizer: Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 1e-05
+)
+Loss function: MSELoss()
+Training batches: 104
+Validation batches: 21
+
+Starting Epoch [1/50]
+
+First batch details:
+Scaled predictions (first 3):
+[[-0.03347619]
+ [-0.1178636 ]
+ [-0.08722524]]
+Scaled targets (first 3):
+[-0.09726977  0.36098585  0.01424726]
+Price predictions (first 3):
+[ 409.43499828 -114.96374632   75.42861053]
+Price targets (first 3):
+[  13.01002164 2860.69406107  705.99720072]
+Initial normalized MSE: 0.389434
+Initial price-scale MSE: 15038427.52
+Epoch [1/50] Summary:
+  Normalized - Train MSE: 0.051290, RMSE: 0.226474
+  Normalized - Val MSE: 7.659826, RMSE: 2.767639
+  Price Scale - Train MSE: 1980633.76, RMSE: $1407.35
+  Price Scale - Val MSE: 295792325.07, RMSE: $17198.61
+
+Starting Epoch [2/50]
+Epoch [2/50] Summary:
+  Normalized - Train MSE: 0.022774, RMSE: 0.150911
+  Normalized - Val MSE: 2.886827, RMSE: 1.699067
+  Price Scale - Train MSE: 879441.87, RMSE: $937.79
+  Price Scale - Val MSE: 111477900.06, RMSE: $10558.31
+
+Starting Epoch [3/50]
+Epoch [3/50] Summary:
+  Normalized - Train MSE: 0.015601, RMSE: 0.124903
+  Normalized - Val MSE: 1.119328, RMSE: 1.057983
+  Price Scale - Train MSE: 602438.88, RMSE: $776.17
+  Price Scale - Val MSE: 43224060.96, RMSE: $6574.50
+
+Starting Epoch [4/50]
+Epoch [4/50] Summary:
+  Normalized - Train MSE: 0.013842, RMSE: 0.117650
+  Normalized - Val MSE: 0.710694, RMSE: 0.843027
+  Price Scale - Train MSE: 534509.45, RMSE: $731.10
+  Price Scale - Val MSE: 27444206.18, RMSE: $5238.72
+
+Starting Epoch [5/50]
+
+Attention Pattern Sample (Epoch 5):
+Average attention weights: [[0.01815614]
+ [0.0068627 ]
+ [0.00400111]
+ [0.00374084]
+ [0.00345243]]
+Epoch [5/50] Summary:
+  Normalized - Train MSE: 0.013836, RMSE: 0.117627
+  Normalized - Val MSE: 1.002076, RMSE: 1.001037
+  Price Scale - Train MSE: 534293.78, RMSE: $730.95
+  Price Scale - Val MSE: 38696222.53, RMSE: $6220.63
+
+Starting Epoch [6/50]
+Epoch [6/50] Summary:
+  Normalized - Train MSE: 0.011131, RMSE: 0.105501
+  Normalized - Val MSE: 0.515163, RMSE: 0.717749
+  Price Scale - Train MSE: 429816.12, RMSE: $655.60
+  Price Scale - Val MSE: 19893573.30, RMSE: $4460.22
+
+Starting Epoch [7/50]
+Epoch [7/50] Summary:
+  Normalized - Train MSE: 0.010739, RMSE: 0.103630
+  Normalized - Val MSE: 0.424339, RMSE: 0.651413
+  Price Scale - Train MSE: 414708.13, RMSE: $643.98
+  Price Scale - Val MSE: 16386300.35, RMSE: $4048.00
+
+Starting Epoch [8/50]
+Epoch [8/50] Summary:
+  Normalized - Train MSE: 0.012198, RMSE: 0.110446
+  Normalized - Val MSE: 0.570212, RMSE: 0.755124
+  Price Scale - Train MSE: 471048.38, RMSE: $686.33
+  Price Scale - Val MSE: 22019343.77, RMSE: $4692.48
+
+Starting Epoch [9/50]
+Epoch [9/50] Summary:
+  Normalized - Train MSE: 0.010495, RMSE: 0.102445
+  Normalized - Val MSE: 0.450797, RMSE: 0.671414
+  Price Scale - Train MSE: 405273.47, RMSE: $636.61
+  Price Scale - Val MSE: 17407997.20, RMSE: $4172.29
+
+Starting Epoch [10/50]
+
+Attention Pattern Sample (Epoch 10):
+Average attention weights: [[0.0023952 ]
+ [0.00075975]
+ [0.00043101]
+ [0.0004564 ]
+ [0.00044899]]
+Epoch [10/50] Summary:
+  Normalized - Train MSE: 0.010131, RMSE: 0.100652
+  Normalized - Val MSE: 0.372080, RMSE: 0.609983
+  Price Scale - Train MSE: 391212.75, RMSE: $625.47
+  Price Scale - Val MSE: 14368250.10, RMSE: $3790.55
+
+Starting Epoch [11/50]
+Epoch [11/50] Summary:
+  Normalized - Train MSE: 0.009200, RMSE: 0.095915
+  Normalized - Val MSE: 0.248498, RMSE: 0.498496
+  Price Scale - Train MSE: 355259.32, RMSE: $596.04
+  Price Scale - Val MSE: 9596027.62, RMSE: $3097.75
+
+Starting Epoch [12/50]
+Epoch [12/50] Summary:
+  Normalized - Train MSE: 0.009896, RMSE: 0.099478
+  Normalized - Val MSE: 0.395115, RMSE: 0.628582
+  Price Scale - Train MSE: 382136.41, RMSE: $618.17
+  Price Scale - Val MSE: 15257791.42, RMSE: $3906.12
+
+Starting Epoch [13/50]
+Epoch [13/50] Summary:
+  Normalized - Train MSE: 0.009236, RMSE: 0.096102
+  Normalized - Val MSE: 0.469277, RMSE: 0.685038
+  Price Scale - Train MSE: 356644.96, RMSE: $597.20
+  Price Scale - Val MSE: 18121626.16, RMSE: $4256.95
+
+Starting Epoch [14/50]
+Epoch [14/50] Summary:
+  Normalized - Train MSE: 0.009740, RMSE: 0.098693
+  Normalized - Val MSE: 0.638182, RMSE: 0.798863
+  Price Scale - Train MSE: 376132.39, RMSE: $613.30
+  Price Scale - Val MSE: 24644083.40, RMSE: $4964.28
+
+Starting Epoch [15/50]
+
+Attention Pattern Sample (Epoch 15):
+Average attention weights: [[2.5194639e-04]
+ [5.3894757e-05]
+ [1.9727086e-05]
+ [1.4859352e-05]
+ [1.1564486e-05]]
+Epoch [15/50] Summary:
+  Normalized - Train MSE: 0.009110, RMSE: 0.095449
+  Normalized - Val MSE: 0.717018, RMSE: 0.846769
+  Price Scale - Train MSE: 351808.42, RMSE: $593.13
+  Price Scale - Val MSE: 27688424.51, RMSE: $5261.98
+
+Starting Epoch [16/50]
+Epoch [16/50] Summary:
+  Normalized - Train MSE: 0.009642, RMSE: 0.098194
+  Normalized - Val MSE: 0.387872, RMSE: 0.622794
+  Price Scale - Train MSE: 372335.36, RMSE: $610.19
+  Price Scale - Val MSE: 14978091.84, RMSE: $3870.15
+
+Starting Epoch [17/50]
+Epoch [17/50] Summary:
+  Normalized - Train MSE: 0.009225, RMSE: 0.096049
+  Normalized - Val MSE: 0.308535, RMSE: 0.555459
+  Price Scale - Train MSE: 356248.37, RMSE: $596.87
+  Price Scale - Val MSE: 11914412.75, RMSE: $3451.73
+
+Starting Epoch [18/50]
+Epoch [18/50] Summary:
+  Normalized - Train MSE: 0.007962, RMSE: 0.089230
+  Normalized - Val MSE: 0.617112, RMSE: 0.785564
+  Price Scale - Train MSE: 307457.39, RMSE: $554.49
+  Price Scale - Val MSE: 23830420.84, RMSE: $4881.64
+
+Starting Epoch [19/50]
+Epoch [19/50] Summary:
+  Normalized - Train MSE: 0.008003, RMSE: 0.089460
+  Normalized - Val MSE: 0.325132, RMSE: 0.570204
+  Price Scale - Train MSE: 309050.43, RMSE: $555.92
+  Price Scale - Val MSE: 12555329.65, RMSE: $3543.35
+
+Starting Epoch [20/50]
+
+Attention Pattern Sample (Epoch 20):
+Average attention weights: [[8.7762128e-06]
+ [1.4651674e-06]
+ [8.8440754e-07]
+ [7.2927605e-07]
+ [5.1786492e-07]]
+Epoch [20/50] Summary:
+  Normalized - Train MSE: 0.008878, RMSE: 0.094225
+  Normalized - Val MSE: 0.359814, RMSE: 0.599845
+  Price Scale - Train MSE: 342846.47, RMSE: $585.53
+  Price Scale - Val MSE: 13894590.58, RMSE: $3727.54
+
+Starting Epoch [21/50]
+Epoch [21/50] Summary:
+  Normalized - Train MSE: 0.008799, RMSE: 0.093806
+  Normalized - Val MSE: 0.393943, RMSE: 0.627649
+  Price Scale - Train MSE: 339801.87, RMSE: $582.93
+  Price Scale - Val MSE: 15212524.63, RMSE: $3900.32
+
+Starting Epoch [22/50]
+Epoch [22/50] Summary:
+  Normalized - Train MSE: 0.008192, RMSE: 0.090510
+  Normalized - Val MSE: 0.332120, RMSE: 0.576298
+  Price Scale - Train MSE: 316343.91, RMSE: $562.44
+  Price Scale - Val MSE: 12825154.12, RMSE: $3581.22
+
+Starting Epoch [23/50]
+Epoch [23/50] Summary:
+  Normalized - Train MSE: 0.008456, RMSE: 0.091957
+  Normalized - Val MSE: 0.293053, RMSE: 0.541344
+  Price Scale - Train MSE: 326541.66, RMSE: $571.44
+  Price Scale - Val MSE: 11316554.64, RMSE: $3364.01
+
+Starting Epoch [24/50]
+Epoch [24/50] Summary:
+  Normalized - Train MSE: 0.008493, RMSE: 0.092160
+  Normalized - Val MSE: 0.246291, RMSE: 0.496277
+  Price Scale - Train MSE: 327981.55, RMSE: $572.70
+  Price Scale - Val MSE: 9510801.99, RMSE: $3083.96
+
+Starting Epoch [25/50]
+
+Attention Pattern Sample (Epoch 25):
+Average attention weights: [[6.20729552e-05]
+ [2.44343846e-06]
+ [3.19332202e-07]
+ [2.75873049e-07]
+ [1.13204116e-07]]
+Epoch [25/50] Summary:
+  Normalized - Train MSE: 0.008275, RMSE: 0.090969
+  Normalized - Val MSE: 0.504239, RMSE: 0.710098
+  Price Scale - Train MSE: 319559.34, RMSE: $565.30
+  Price Scale - Val MSE: 19471726.63, RMSE: $4412.68
+
+Starting Epoch [26/50]
+Epoch [26/50] Summary:
+  Normalized - Train MSE: 0.006668, RMSE: 0.081660
+  Normalized - Val MSE: 0.250018, RMSE: 0.500018
+  Price Scale - Train MSE: 257503.80, RMSE: $507.45
+  Price Scale - Val MSE: 9654723.08, RMSE: $3107.21
+
+Starting Epoch [27/50]
+Epoch [27/50] Summary:
+  Normalized - Train MSE: 0.007277, RMSE: 0.085303
+  Normalized - Val MSE: 0.409740, RMSE: 0.640109
+  Price Scale - Train MSE: 280993.25, RMSE: $530.09
+  Price Scale - Val MSE: 15822543.69, RMSE: $3977.76
+
+Starting Epoch [28/50]
+Epoch [28/50] Summary:
+  Normalized - Train MSE: 0.007808, RMSE: 0.088361
+  Normalized - Val MSE: 1.061177, RMSE: 1.030134
+  Price Scale - Train MSE: 301504.10, RMSE: $549.09
+  Price Scale - Val MSE: 40978475.95, RMSE: $6401.44
+
+Starting Epoch [29/50]
+Epoch [29/50] Summary:
+  Normalized - Train MSE: 0.008362, RMSE: 0.091445
+  Normalized - Val MSE: 0.562609, RMSE: 0.750073
+  Price Scale - Train MSE: 322912.29, RMSE: $568.25
+  Price Scale - Val MSE: 21725740.22, RMSE: $4661.09
+
+Starting Epoch [30/50]
+
+Attention Pattern Sample (Epoch 30):
+Average attention weights: [[4.4164743e-05]
+ [3.6058857e-06]
+ [5.8326094e-07]
+ [5.6155068e-07]
+ [1.7288477e-07]]
+Epoch [30/50] Summary:
+  Normalized - Train MSE: 0.007591, RMSE: 0.087125
+  Normalized - Val MSE: 0.375504, RMSE: 0.612784
+  Price Scale - Train MSE: 293128.84, RMSE: $541.41
+  Price Scale - Val MSE: 14500472.43, RMSE: $3807.95
+
+Starting Epoch [31/50]
+Epoch [31/50] Summary:
+  Normalized - Train MSE: 0.007332, RMSE: 0.085628
+  Normalized - Val MSE: 0.247170, RMSE: 0.497162
+  Price Scale - Train MSE: 283137.19, RMSE: $532.11
+  Price Scale - Val MSE: 9544733.30, RMSE: $3089.46
+
+Starting Epoch [32/50]
+Epoch [32/50] Summary:
+  Normalized - Train MSE: 0.007359, RMSE: 0.085787
+  Normalized - Val MSE: 0.512439, RMSE: 0.715848
+  Price Scale - Train MSE: 284191.90, RMSE: $533.10
+  Price Scale - Val MSE: 19788365.87, RMSE: $4448.41
+
+Starting Epoch [33/50]
+Epoch [33/50] Summary:
+  Normalized - Train MSE: 0.007555, RMSE: 0.086922
+  Normalized - Val MSE: 0.542529, RMSE: 0.736565
+  Price Scale - Train MSE: 291761.84, RMSE: $540.15
+  Price Scale - Val MSE: 20950317.29, RMSE: $4577.15
+
+Starting Epoch [34/50]
+Epoch [34/50] Summary:
+  Normalized - Train MSE: 0.006894, RMSE: 0.083030
+  Normalized - Val MSE: 0.188047, RMSE: 0.433644
+  Price Scale - Train MSE: 266218.40, RMSE: $515.96
+  Price Scale - Val MSE: 7261622.72, RMSE: $2694.74
+
+Starting Epoch [35/50]
+
+Attention Pattern Sample (Epoch 35):
+Average attention weights: [[2.2724537e-07]
+ [1.3781394e-08]
+ [5.9290102e-09]
+ [4.0949448e-09]
+ [2.5247138e-09]]
+Epoch [35/50] Summary:
+  Normalized - Train MSE: 0.006528, RMSE: 0.080794
+  Normalized - Val MSE: 0.376380, RMSE: 0.613498
+  Price Scale - Train MSE: 252070.22, RMSE: $502.07
+  Price Scale - Val MSE: 14534309.89, RMSE: $3812.39
+
+Starting Epoch [36/50]
+Epoch [36/50] Summary:
+  Normalized - Train MSE: 0.010866, RMSE: 0.104241
+  Normalized - Val MSE: 1.148158, RMSE: 1.071521
+  Price Scale - Train MSE: 419612.53, RMSE: $647.78
+  Price Scale - Val MSE: 44337327.39, RMSE: $6658.63
+
+Starting Epoch [37/50]
+Epoch [37/50] Summary:
+  Normalized - Train MSE: 0.010772, RMSE: 0.103786
+  Normalized - Val MSE: 0.678137, RMSE: 0.823491
+  Price Scale - Train MSE: 415957.73, RMSE: $644.95
+  Price Scale - Val MSE: 26186996.34, RMSE: $5117.32
+
+Starting Epoch [38/50]
+Epoch [38/50] Summary:
+  Normalized - Train MSE: 0.008054, RMSE: 0.089743
+  Normalized - Val MSE: 0.399746, RMSE: 0.632255
+  Price Scale - Train MSE: 311006.49, RMSE: $557.68
+  Price Scale - Val MSE: 15436622.52, RMSE: $3928.95
+
+Starting Epoch [39/50]
+Epoch [39/50] Summary:
+  Normalized - Train MSE: 0.006931, RMSE: 0.083252
+  Normalized - Val MSE: 0.311764, RMSE: 0.558358
+  Price Scale - Train MSE: 267644.19, RMSE: $517.34
+  Price Scale - Val MSE: 12039096.03, RMSE: $3469.74
+
+Starting Epoch [40/50]
+
+Attention Pattern Sample (Epoch 40):
+Average attention weights: [[2.3354201e-09]
+ [3.1968561e-10]
+ [2.1400169e-10]
+ [1.9344898e-10]
+ [2.5133909e-10]]
+Epoch [40/50] Summary:
+  Normalized - Train MSE: 0.007867, RMSE: 0.088696
+  Normalized - Val MSE: 0.280903, RMSE: 0.530003
+  Price Scale - Train MSE: 303793.70, RMSE: $551.17
+  Price Scale - Val MSE: 10847375.74, RMSE: $3293.54
+
+Starting Epoch [41/50]
+Epoch [41/50] Summary:
+  Normalized - Train MSE: 0.006680, RMSE: 0.081733
+  Normalized - Val MSE: 0.292869, RMSE: 0.541173
+  Price Scale - Train MSE: 257966.58, RMSE: $507.90
+  Price Scale - Val MSE: 11309432.07, RMSE: $3362.95
+
+Starting Epoch [42/50]
+Epoch [42/50] Summary:
+  Normalized - Train MSE: 0.007128, RMSE: 0.084427
+  Normalized - Val MSE: 0.199029, RMSE: 0.446126
+  Price Scale - Train MSE: 275251.68, RMSE: $524.64
+  Price Scale - Val MSE: 7685705.84, RMSE: $2772.31
+
+Starting Epoch [43/50]
+Epoch [43/50] Summary:
+  Normalized - Train MSE: 0.007236, RMSE: 0.085067
+  Normalized - Val MSE: 0.284530, RMSE: 0.533414
+  Price Scale - Train MSE: 279441.78, RMSE: $528.62
+  Price Scale - Val MSE: 10987441.32, RMSE: $3314.73
+
+Starting Epoch [44/50]
+Epoch [44/50] Summary:
+  Normalized - Train MSE: 0.006474, RMSE: 0.080462
+  Normalized - Val MSE: 0.208268, RMSE: 0.456364
+  Price Scale - Train MSE: 250007.99, RMSE: $500.01
+  Price Scale - Val MSE: 8042508.81, RMSE: $2835.93
+
+Starting Epoch [45/50]
+
+Attention Pattern Sample (Epoch 45):
+Average attention weights: [[2.9234601e-11]
+ [1.3662069e-11]
+ [1.3846817e-11]
+ [9.2607111e-12]
+ [3.3994771e-12]]
+Epoch [45/50] Summary:
+  Normalized - Train MSE: 0.007129, RMSE: 0.084434
+  Normalized - Val MSE: 0.216017, RMSE: 0.464777
+  Price Scale - Train MSE: 275300.47, RMSE: $524.69
+  Price Scale - Val MSE: 8341736.30, RMSE: $2888.21
+
+Starting Epoch [46/50]
+Epoch [46/50] Summary:
+  Normalized - Train MSE: 0.007129, RMSE: 0.084431
+  Normalized - Val MSE: 0.235993, RMSE: 0.485791
+  Price Scale - Train MSE: 275278.34, RMSE: $524.67
+  Price Scale - Val MSE: 9113111.92, RMSE: $3018.79
+
+Starting Epoch [47/50]
+Epoch [47/50] Summary:
+  Normalized - Train MSE: 0.007065, RMSE: 0.084053
+  Normalized - Val MSE: 0.202888, RMSE: 0.450431
+  Price Scale - Train MSE: 272819.56, RMSE: $522.32
+  Price Scale - Val MSE: 7834727.03, RMSE: $2799.06
+
+Starting Epoch [48/50]
+Epoch [48/50] Summary:
+  Normalized - Train MSE: 0.007066, RMSE: 0.084059
+  Normalized - Val MSE: 0.174767, RMSE: 0.418052
+  Price Scale - Train MSE: 272860.02, RMSE: $522.36
+  Price Scale - Val MSE: 6748827.91, RMSE: $2597.85
+
+Starting Epoch [49/50]
+Epoch [49/50] Summary:
+  Normalized - Train MSE: 0.006762, RMSE: 0.082230
+  Normalized - Val MSE: 0.203284, RMSE: 0.450870
+  Price Scale - Train MSE: 261115.22, RMSE: $510.99
+  Price Scale - Val MSE: 7850010.84, RMSE: $2801.79
+
+Starting Epoch [50/50]
+
+Attention Pattern Sample (Epoch 50):
+Average attention weights: [[3.8061579e-10]
+ [5.0158201e-11]
+ [2.0898399e-11]
+ [3.0657284e-12]
+ [1.3578046e-12]]
+Epoch [50/50] Summary:
+  Normalized - Train MSE: 0.006341, RMSE: 0.079629
+  Normalized - Val MSE: 0.192574, RMSE: 0.438833
+  Price Scale - Train MSE: 244856.65, RMSE: $494.83
+  Price Scale - Val MSE: 7436451.53, RMSE: $2726.99
+Training completed in 820.58 seconds
+Saving model and results...
+Starting evaluation process...
+Generating predictions...
+Creating visualizations...
+Training history plot saved
+Prediction analysis plots saved
+Metrics and sample predictions tables saved
+Error distribution and time series plots saved
+Creating attention visualizations...
+Attention visualization plots saved
+Evaluation metrics (for test set):
+  Mean Squared Error ($): 6994660.37
+  Root Mean Squared Error ($): 2644.74
+  Mean Absolute Error ($): 1985.53
+  Mean Absolute Percentage Error (%): 4.34
+  Weighted MAPE (%): 4.57
+  Directional Accuracy (%): 46.76
+  Maximum Absolute Error ($): 10445.91
+  Mean Percentage Error (%): 3.70
+  R² Score: 0.98

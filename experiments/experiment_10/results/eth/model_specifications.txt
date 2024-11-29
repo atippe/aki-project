@@ -1,0 +1,32 @@
+=== Model Specifications ===
+
+Model Architecture:
+  Type: Advanced LSTM with Attention
+  Hidden Size: 256
+  Number of Layers: 3
+  Dropout Rate: 0.3
+  Input Size: 5
+  Output Size: 1
+  Prediction Steps: 5
+  Model Class: MultiStepPricePredictionModel
+
+Training Parameters:
+  Epochs: 50
+  Batch Size: 64
+  Learning Rate: 0.001
+  Device: cpu
+  Loss Function: MSELoss
+  Optimizer: Adam
+  Weight Decay: 1e-05
+  Beta Values: (0.9, 0.999)
+  Epsilon: 1e-08
+
+Data Configuration:
+  Sequence Length: 60
+  Feature Count: 5
+  Training Samples: torch.Size([2003, 60, 5])
+  Validation Samples: torch.Size([379, 60, 5])
+  Test Samples: torch.Size([380, 60, 5])
+  Close Price Index: 4
+  Prediction Steps: 5
+

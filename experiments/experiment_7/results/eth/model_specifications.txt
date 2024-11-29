@@ -1,0 +1,31 @@
+=== Model Specifications ===
+
+Model Architecture:
+  Type: Advanced LSTM with Attention and SSA Optimizer
+  Hidden Size: 128
+  Number of Layers: 2
+  Dropout Rate: 0.2
+  Input Size: 5
+  Output Size: 1
+  Model Class: AdvancedPricePredictionModel
+
+Training Parameters:
+  Epochs: 5
+  Batch Size: 32
+  Device: cpu
+  Loss Function: MSELoss
+  Optimizer: SSAOptimizer
+  Population Size: 50
+  Control Parameter (a): 0.8
+  Threshold (ST): 0.6
+  Diversity Weight: 0.1
+  Momentum: 0.1
+
+Data Configuration:
+  Sequence Length: 60
+  Feature Count: 5
+  Training Samples: torch.Size([2007, 60, 5])
+  Validation Samples: torch.Size([383, 60, 5])
+  Test Samples: torch.Size([384, 60, 5])
+  Close Price Index: 4
+
